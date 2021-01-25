@@ -34,6 +34,7 @@ namespace TodoList.API
                     {
                         builder.WithOrigins("http://localhost:4200");
                         builder.WithHeaders(HeaderNames.ContentType);
+                        builder.AllowAnyMethod();
                     });
             });
         }

@@ -56,9 +56,25 @@ namespace TodoList.API.Controllers
         }
 
         // PUT api/<TodoListItemsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut]
+        public async Task<ActionResult<TodoListItem>> Put([FromBody] TodoListItem todoListItem)
         {
+            using (var context = new TodoListContext())
+            {
+                try
+                {
+                    TodoListItem tdi = context.TodoListItems.Find(todoListItem.Id);
+                    tdi.Name = todoListItem.Name;
+                    tdi.Description = todoListItem.Description;
+                    tdi.Completed = todoListItem.Completed;
+                    await context.SaveChangesAsync();
+                    return tdi;
+                }
+                catch
+                {
+                    return BadRequest();
+                }
+            }
         }
 
         // DELETE api/<TodoListItemsController>/5

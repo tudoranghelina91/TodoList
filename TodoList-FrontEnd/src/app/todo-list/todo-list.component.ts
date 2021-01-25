@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { TodoListItem } from '../interfaces/ITodoListItem';
 import { TodoListService } from '../services/todo-list.service';
 
@@ -12,6 +12,7 @@ export class TodoListComponent implements OnInit {
 
   todoListItems : TodoListItem[];
   todoListService : TodoListService;
+  lastUpdatedTodoListItem : TodoListItem;
   constructor(httpClient : HttpClient) {
     this.todoListService = new TodoListService(httpClient)
    }
@@ -26,9 +27,18 @@ export class TodoListComponent implements OnInit {
       });
   }
 
-  editTodoListItem(todoListItem : TodoListItem)
+  updateTodoListItemStatus(todoListItem : TodoListItem)
   {
-    
+    this.toggleTodoListItemStatus(todoListItem);
+    this.todoListService.updateTodoListItem(todoListItem)
+    .subscribe();
+  }
+  toggleTodoListItemStatus(todoListItem : TodoListItem) {
+    if (!todoListItem.completed) {
+      todoListItem.completed = true;
+    } else {
+      todoListItem.completed = false;
+    }
   }
 
 }

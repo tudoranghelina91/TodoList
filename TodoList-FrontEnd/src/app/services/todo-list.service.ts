@@ -13,4 +13,14 @@ export class TodoListService {
   {
     return this.httpClient.get<TodoListItem[]>('https://localhost:44307/api/todolistitems');
   }
+
+  getTodoListItem(id : number)
+  {
+    return this.httpClient.get<TodoListItem>('https://localhost:44307/api/todolistitems/' + id);
+  }
+
+  updateTodoListItem(todoListItem : TodoListItem)
+  {
+    return this.httpClient.put<TodoListItem>('https://localhost:44307/api/todolistitems', todoListItem);
+  }
 }

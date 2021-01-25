@@ -1,7 +1,7 @@
 <mat-card *ngFor="let todoListItem of todoListItems">
-    <mat-card-title>{{todoListItem.name}} <mat-checkbox [attr.value]="todoListItem.completed"></mat-checkbox></mat-card-title>    
+    <mat-card-title>{{todoListItem.name}} <mat-checkbox [(checked)]="todoListItem.completed" (change)="updateTodoListItemStatus(todoListItem)"></mat-checkbox></mat-card-title>    
     <mat-card-subtitle>{{todoListItem.description}}</mat-card-subtitle>
     <mat-card-content>
-        <button mat-flat-button color="primary">Edit Details</button>
+        <button mat-flat-button color="primary" [routerLink]="['/', todoListItem.id]">Edit Details</button>
     </mat-card-content>
 </mat-card>
