@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "TodoList-FrontEnd"
+  "defaultProject": "TodoList-FrontEnd",
+  "cli": {
+    "analytics": "71c25302-bcab-4aab-b85a-8911e569d0a6"
+  }
 }
