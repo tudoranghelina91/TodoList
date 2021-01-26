@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
+html, body { height: 100%; background-color: rgba(245, 245, 245, 0.596); }
 .mat-card-title {
     margin-right: 30px !important;
 }

@@ -3,8 +3,8 @@
         <mat-spinner></mat-spinner>
     </div>
     <div class="container">
-        <h1>Hi there!</h1>
-        <h3>Here are your tasks for the day!</h3>
+        <h1 *ngIf="success">Hi there!</h1>
+        <h3 *ngIf="success">Here are your tasks for the day!</h3>
         <mat-card class="container" *ngFor="let todoListItem of todoListItems">
             <mat-card-title>{{todoListItem.name}}
                 <mat-checkbox [(checked)]="todoListItem.completed" (change)="updateTodoListItemStatus(todoListItem)"></mat-checkbox>

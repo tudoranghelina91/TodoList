@@ -20,6 +20,7 @@ export class TodoListItemComponent implements OnInit {
   submitText : String;
   detailText : String;
   canDelete : Boolean;
+  notLoaded : Boolean;
 
   public todoListItemFormGroup : FormGroup;
 
@@ -34,6 +35,7 @@ export class TodoListItemComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.notLoaded = true;
     this.route.params.subscribe(params => {
       if (params['id'] != null) {
         this.todoListService.getTodoListItem(params['id'])
@@ -47,6 +49,9 @@ export class TodoListItemComponent implements OnInit {
             this.detailText = "Edit";
             this.canDelete = true;
             this.submitText = "Save Changes";
+            this.notLoaded = false;
+          }, error => {
+            this.notLoaded = true;
           });
         } 
         else {
@@ -55,7 +60,10 @@ export class TodoListItemComponent implements OnInit {
           this.todoListItemFormGroup.get('completed').setValue(false);
           this.submitText = "Add";
           this.detailText = "Add New Item";
+          this.notLoaded = false;
       }
+    }, error => {
+      this.notLoaded = true;
     })
   }
 
@@ -63,7 +71,7 @@ export class TodoListItemComponent implements OnInit {
     this.todoListItem.name = this.todoListItemFormGroup.get('name').value;
     this.todoListItem.description = this.todoListItemFormGroup.get('description').value;
     this.todoListItem.completed = this.todoListItemFormGroup.get('completed').value;
-    if (this.todoListItem.name != null && this.todoListItem.description != null && this.todoListItem.completed != null) {
+    if (this.todoListItem.name != null && this.todoListItem.completed != null) {
       if (this.todoListItem.id != null) {
         this.todoListService.updateTodoListItem(this.todoListItem)
           .subscribe(data => {
@@ -86,7 +94,7 @@ export class TodoListItemComponent implements OnInit {
         });
       }
     } else {
-      this._snackBar.open("Please check the required fields", null, { 'duration' : 5000 });
+      this._snackBar.open("Name is required", null, { 'duration' : 5000 });
     }
   }
 
