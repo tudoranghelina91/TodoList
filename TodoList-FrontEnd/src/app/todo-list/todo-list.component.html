@@ -1,7 +1,23 @@
-<mat-card *ngFor="let todoListItem of todoListItems">
-    <mat-card-title>{{todoListItem.name}} <mat-checkbox [(checked)]="todoListItem.completed" (change)="updateTodoListItemStatus(todoListItem)"></mat-checkbox></mat-card-title>    
-    <mat-card-subtitle>{{todoListItem.description}}</mat-card-subtitle>
-    <mat-card-content>
-        <button mat-flat-button color="primary" [routerLink]="['/', todoListItem.id]">Edit Details</button>
-    </mat-card-content>
-</mat-card>
+<div class="container">
+    <div class="center-screen" *ngIf="notLoaded">
+        <mat-spinner></mat-spinner>
+    </div>
+    <div class="container">
+        <h1>Hi there!</h1>
+        <h3>Here are your tasks for the day!</h3>
+        <mat-card class="container" *ngFor="let todoListItem of todoListItems">
+            <mat-card-title>{{todoListItem.name}}
+                <mat-checkbox [(checked)]="todoListItem.completed" (change)="updateTodoListItemStatus(todoListItem)"></mat-checkbox>
+            </mat-card-title>    
+            <mat-card-subtitle>{{todoListItem.description}}</mat-card-subtitle>
+            <mat-card-content>
+                <button mat-flat-button color="primary" [routerLink]="['/', todoListItem.id]">Edit Details</button>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+<div>
+    <button class="float-button" mat-fab [routerLink]="['/add']" aria-label="Add new item">
+        <mat-icon class="float-button-icon">add_task</mat-icon>
+    </button>
+</div>

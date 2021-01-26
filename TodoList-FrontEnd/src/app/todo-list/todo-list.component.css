@@ -1,8 +1,35 @@
-.mat-card {
+/* .mat-card {
     margin: 10px;
-}
+} */
 
-.app-todo-list
+/* .app-todo-list
 {
     margin: 500px;
+} */
+
+.center-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
 }
+
+.float-button {
+    position: fixed;
+    right: 20px;
+    bottom: 30px;
+    width: 80px;
+    height: 80px;
+}
+
+.float-button-icon {
+    font-size: 40px;
+    vertical-align: middle;
+    position: relative;
+    right: 10px;
+    bottom: 10px;
+
+}
+

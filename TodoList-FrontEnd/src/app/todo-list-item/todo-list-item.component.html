@@ -1,23 +1,27 @@
-<form [formGroup]="todoListItemFormGroup" (ngSubmit)="onSubmit()">
-    <div>
-        <mat-form-field>
-            <mat-label>Name</mat-label>
-            <input matInput formControlName="name">
-        </mat-form-field>
-    </div>
-    <div>
-        <mat-form-field>
-            <mat-label>Description</mat-label>
-            <textarea matInput formControlName="description"></textarea>
-        </mat-form-field>
-    </div>
-    <div>
-        <mat-checkbox matInput formControlName="completed">
-            <mat-label>Completed</mat-label>
-        </mat-checkbox>
-    </div>
-    <div>
-        <button mat-flat-button color="primary">Save Changes</button>
-        <button mat-flat-button type="button" color="secondary">Go back</button>
-    </div>
-</form>
+<div class="container">
+    <h1>{{detailText}} {{todoListItem.name}}</h1>
+    <form [formGroup]="todoListItemFormGroup" (ngSubmit)="onSubmit()">
+        <div>
+            <mat-form-field class="input-headline">
+                <mat-label class="input-label">Name</mat-label>
+                <input matInput formControlName="name">
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-form-field class="input-normal">
+                <mat-label class="input-label">Description</mat-label>
+                <textarea matInput formControlName="description"></textarea>
+            </mat-form-field>
+        </div>
+        <div>
+            <mat-checkbox matInput formControlName="completed">
+                <mat-label>Completed</mat-label>
+            </mat-checkbox>
+        </div>
+        <div>
+            <button mat-flat-button color="primary">{{submitText}}</button>
+            <button *ngIf="canDelete" type="button" mat-flat-button color="danger" [disabled]="!canDelete" (click)="deleteTodoListItem()">Delete</button>
+            <button mat-flat-button type="button" color="secondary" (click)="goBack()">Go back</button>
+        </div>
+    </form>
+</div>

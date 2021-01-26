@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { TodoListItem } from '../interfaces/ITodoListItem';
 import { TodoListService } from '../services/todo-list.service';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-todo-list',
@@ -13,7 +14,9 @@ export class TodoListComponent implements OnInit {
   todoListItems : TodoListItem[];
   todoListService : TodoListService;
   lastUpdatedTodoListItem : TodoListItem;
-  constructor(httpClient : HttpClient) {
+  notLoaded : Boolean = true;
+
+  constructor(httpClient : HttpClient, private _snackBar : MatSnackBar) {
     this.todoListService = new TodoListService(httpClient)
    }
 
@@ -22,8 +25,10 @@ export class TodoListComponent implements OnInit {
     .subscribe(data => 
       {
         this.todoListItems = data;
+        this.notLoaded = false;
       }, error => {
-
+        this.notLoaded = false;
+        this._snackBar.open(error.message, null, {'duration' : 5000});
       });
   }
 

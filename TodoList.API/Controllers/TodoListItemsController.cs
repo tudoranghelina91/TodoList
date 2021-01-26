@@ -79,8 +79,27 @@ namespace TodoList.API.Controllers
 
         // DELETE api/<TodoListItemsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult<TodoListItem>> Delete(int id)
         {
+            using (var context = new TodoListContext())
+            {
+                try
+                {
+                    TodoListItem tdi = context.TodoListItems.Find(id);
+                    if (tdi != null)
+                    {
+                        var t = context.Remove(tdi);
+                        await context.SaveChangesAsync();
+                        return t.Entity;
+                    }
+
+                    return null;
+                }
+                catch
+                {
+                    return BadRequest();
+                }
+            }
         }
     }
 }
