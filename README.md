@@ -1,2 +1,2 @@
 # TodoList
-TodoList with Angular and Dot net core
+TodoList with Angular and .NET 5
