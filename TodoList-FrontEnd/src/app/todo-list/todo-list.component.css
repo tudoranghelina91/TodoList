@@ -16,6 +16,10 @@
     min-height: 100vh;
 }
 
+.mat-checkbox {
+    margin-left: 10px;
+}
+
 .float-button {
     position: fixed;
     right: 20px;
