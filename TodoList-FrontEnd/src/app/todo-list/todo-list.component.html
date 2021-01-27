@@ -6,10 +6,10 @@
         <h1 *ngIf="success">Hi there!</h1>
         <h3 *ngIf="success">Here are your tasks for the day!</h3>
         <mat-card class="container" *ngFor="let todoListItem of todoListItems; let i = index">
-            <mat-card-title [style.text-decoration]="todoListItem.completed ? 'line-through' : 'none'">{{pageEvent.pageIndex * pageEvent.pageSize + i + 1}}. {{todoListItem.name}}
+            <mat-card-title>{{pageEvent.pageIndex * pageEvent.pageSize + i + 1}}. <span [style.text-decoration]="todoListItem.completed ? 'line-through' : 'none'">{{todoListItem.name}}</span>
                 <mat-checkbox [(checked)]="todoListItem.completed" (change)="updateTodoListItemStatus(todoListItem)"></mat-checkbox>
             </mat-card-title>    
-            <mat-card-subtitle [style.text-decoration]="todoListItem.completed ? 'line-through' : 'none'">{{todoListItem.description}}</mat-card-subtitle>
+            <mat-card-subtitle>{{todoListItem.description}}</mat-card-subtitle>
             <mat-card-content>
                 <button mat-flat-button color="primary" [routerLink]="['/', todoListItem.id]">Edit Details</button>
             </mat-card-content>
