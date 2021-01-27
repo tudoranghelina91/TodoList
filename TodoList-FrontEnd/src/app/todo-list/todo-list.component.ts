@@ -63,6 +63,7 @@ export class TodoListComponent implements OnInit {
         this.success = false;
         this._snackBar.open(error.message, null, {'duration' : 5000});
       });
+
       return event;
   }
 
