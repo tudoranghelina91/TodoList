@@ -3,6 +3,7 @@ import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { TodoListItem } from '../interfaces/ITodoListItem';
 import { TodoListService } from '../services/todo-list.service';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-todo-list',
@@ -17,22 +18,21 @@ export class TodoListComponent implements OnInit {
   notLoaded : Boolean = true;
   success : Boolean;
 
+  pageEvent: PageEvent;
+  pageSizeOptions: number[] = [5, 10, 25, 50, 100];
+
   constructor(httpClient : HttpClient, private _snackBar : MatSnackBar) {
-    this.todoListService = new TodoListService(httpClient)
+    this.todoListService = new TodoListService(httpClient);
+    this.pageEvent = new PageEvent();
    }
 
   ngOnInit(): void {
-    this.todoListService.getTodoListItems()
-    .subscribe(data => 
-      {
-        this.todoListItems = data;
-        this.notLoaded = false;
-        this.success = true;
-      }, error => {
-        this.notLoaded = false;
-        this.success = false;
-        this._snackBar.open(error.message, null, {'duration' : 5000});
-      });
+    this.todoListService.getTodoListItemsCount()
+    .subscribe(length => this.pageEvent.length = length);
+
+    this.pageEvent.pageSize = this.pageSizeOptions[0];
+    this.pageEvent.pageIndex = 0;
+    this.getServerData(this.pageEvent);
   }
 
   updateTodoListItemStatus(todoListItem : TodoListItem)
@@ -47,6 +47,21 @@ export class TodoListComponent implements OnInit {
     } else {
       todoListItem.completed = false;
     }
+  }
+
+  getServerData(event?:PageEvent) {
+    this.todoListService.getTodoListItems(event.pageIndex + 1, event.pageSize)
+    .subscribe(data => 
+      {
+        this.todoListItems = data;
+        this.notLoaded = false;
+        this.success = true;
+      }, error => {
+        this.notLoaded = false;
+        this.success = false;
+        this._snackBar.open(error.message, null, {'duration' : 5000});
+      });
+      return event;
   }
 
 }

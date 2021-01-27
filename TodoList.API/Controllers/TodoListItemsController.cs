@@ -15,13 +15,38 @@ namespace TodoList.API.Controllers
     {
         // GET: api/<TodoListItemsController>
         [HttpGet]
-        public async Task<List<TodoListItem>> Get()
+        public async Task<IEnumerable<TodoListItem>> Get()
         {
             using (var context = new TodoListContext())
             {
                 return await Task.Run(() =>
                 {
                     return context.TodoListItems.ToList();
+                });
+            }
+        }
+
+        [HttpGet("{page}/{count}")]
+        public async Task<IEnumerable<TodoListItem>> Get(int page, int count)
+        {
+            using (var context = new TodoListContext())
+            {
+                return await Task.Run(() =>
+                {
+                    return context.TodoListItems
+                    .Skip(page * count - count)
+                    .Take(count).ToList();
+                });
+            }
+        }
+        [HttpGet("GetItemsCount")]
+        public async Task<int> GetItemsCount()
+        {
+            using (var context = new TodoListContext())
+            {
+                return await Task.Run(() =>
+                {
+                    return context.TodoListItems.Count();
                 });
             }
         }

@@ -9,6 +9,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -41,7 +42,8 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatDialogModule,
-    MatIconModule
+    MatIconModule,
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

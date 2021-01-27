@@ -5,8 +5,8 @@
     <div class="container">
         <h1 *ngIf="success">Hi there!</h1>
         <h3 *ngIf="success">Here are your tasks for the day!</h3>
-        <mat-card class="container" *ngFor="let todoListItem of todoListItems">
-            <mat-card-title>{{todoListItem.name}}
+        <mat-card class="container" *ngFor="let todoListItem of todoListItems; let i = index">
+            <mat-card-title>{{pageEvent.pageIndex + i + 1}}. {{todoListItem.name}}
                 <mat-checkbox [(checked)]="todoListItem.completed" (change)="updateTodoListItemStatus(todoListItem)"></mat-checkbox>
             </mat-card-title>    
             <mat-card-subtitle>{{todoListItem.description}}</mat-card-subtitle>
@@ -21,3 +21,8 @@
         <mat-icon class="float-button-icon">add_task</mat-icon>
     </button>
 </div>
+<mat-paginator [length]="pageEvent.length"
+              [pageSize]="pageEvent.pageSize"
+              [pageSizeOptions]="pageSizeOptions"
+              (page)="pageEvent = getServerData($event)">
+</mat-paginator>
