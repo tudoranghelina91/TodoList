@@ -50,6 +50,8 @@ export class TodoListComponent implements OnInit {
   }
 
   getServerData(event?:PageEvent) {
+    this.notLoaded = true;
+    this.success = false;
     this.todoListService.getTodoListItems(event.pageIndex + 1, event.pageSize)
     .subscribe(data => 
       {
