@@ -68,12 +68,26 @@ export class TodoListItemComponent implements OnInit {
   }
 
   onSubmit() : void {
-    this.todoListItem.name = this.todoListItemFormGroup.get('name').value;
-    this.todoListItem.description = this.todoListItemFormGroup.get('description').value;
-    this.todoListItem.completed = this.todoListItemFormGroup.get('completed').value;
-    if (this.todoListItem.name != null && this.todoListItem.completed != null) {
-      if (this.todoListItem.id != null) {
-        this.todoListService.updateTodoListItem(this.todoListItem)
+    let todoListItem = new TodoListItem()
+
+    todoListItem.id = this.todoListItem.id;
+    console.log(this.todoListItemFormGroup);
+    if (this.todoListItemFormGroup.get('name').value != null)
+    {
+      todoListItem.name = String(this.todoListItemFormGroup.get('name').value).trim();
+      this.todoListItemFormGroup.get('name').setValue(null);
+    }
+
+    if (this.todoListItemFormGroup.get('description').value != null)
+    {
+      todoListItem.description = String(this.todoListItemFormGroup.get('description').value).trim();
+      this.todoListItemFormGroup.get('description').setValue(null);
+    }
+    todoListItem.completed = this.todoListItemFormGroup.get('completed').value;
+
+    if (todoListItem.name != null && todoListItem.name != "" &&  todoListItem.completed != null) {
+      if (todoListItem.id != null) {
+        this.todoListService.updateTodoListItem(todoListItem)
           .subscribe(data => {
             this.todoListItem.name = data.name;
             this.todoListItem.description = data.description;
@@ -83,7 +97,7 @@ export class TodoListItemComponent implements OnInit {
             this._snackBar.open(error.message, null, { 'duration' : 5000 });
           });
       } else {
-        this.todoListService.insertTodoListItem(this.todoListItem)
+        this.todoListService.insertTodoListItem(todoListItem)
         .subscribe(data => {
           this.todoListItem.name = data.name;
           this.todoListItem.description = data.description;
@@ -95,6 +109,7 @@ export class TodoListItemComponent implements OnInit {
       }
     } else {
       this._snackBar.open("Name is required", null, { 'duration' : 5000 });
+      this.todoListItemFormGroup.get('name').setErrors({required : true})
     }
   }
 
