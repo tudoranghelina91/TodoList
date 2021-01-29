@@ -33,12 +33,13 @@ namespace TodoList.API.Controllers
             {
                 return await Task.Run(() =>
                 {
-                    return context.TodoListItems
+                    return context.TodoListItems.OrderByDescending(tdi => tdi.Id)
                     .Skip(page * count - count)
                     .Take(count).ToList();
                 });
             }
         }
+
         [HttpGet("GetItemsCount")]
         public async Task<int> GetItemsCount()
         {
