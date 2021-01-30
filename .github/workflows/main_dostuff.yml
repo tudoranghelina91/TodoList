@@ -33,6 +33,3 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_321d4480be574ccd94d18a18e3c8c1aa }}
         package: ${{env.DOTNET_ROOT}}/myapp
-        
-    - name: angular deploy
-      run: ng run TodoList-FrontEnd:deploy
