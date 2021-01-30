@@ -32,7 +32,7 @@ namespace TodoList.API
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.WithOrigins("https://dostuff.azurewebsites.net");
+                        builder.WithOrigins("https://dostuffclient.z19.web.core.windows.net");
                         builder.WithHeaders(HeaderNames.ContentType);
                         builder.AllowAnyMethod();
                     });
