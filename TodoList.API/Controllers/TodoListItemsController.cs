@@ -32,7 +32,7 @@ namespace TodoList.API.Controllers
         public async Task<IEnumerable<TodoListItem>> Get(int page, int count)
         {
                 return await _context.TodoListItems.OrderByDescending(tdi => tdi.Id)
-                .Skip(page * count - count)
+                .Skip((page - 1) * count)
                 .Take(count).ToListAsync();
         }
 
