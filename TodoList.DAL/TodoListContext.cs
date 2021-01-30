@@ -10,7 +10,7 @@ namespace TodoList.DAL
     {
         public TodoListContext()
         {
-            Database.EnsureCreated();
+            
         }
         public DbSet<TodoListItem> TodoListItems { get; set; }
 
