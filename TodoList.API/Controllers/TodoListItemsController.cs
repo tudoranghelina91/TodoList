@@ -18,6 +18,7 @@ namespace TodoList.API.Controllers
         public TodoListItemsController(TodoListContext context)
         {
             _context = context;
+            _context.Database.EnsureCreated();
         }
 
         // GET: api/<TodoListItemsController>
