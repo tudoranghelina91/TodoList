@@ -12,9 +12,9 @@ namespace TodoList.DAL
         {
             
         }
+        public TodoListContext(DbContextOptions<TodoListContext> options) : base(options)
+        {
+        }
         public DbSet<TodoListItem> TodoListItems { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite(@"Data Source=TodoList.db;");
     }
 }

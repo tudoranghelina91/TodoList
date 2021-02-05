@@ -90,7 +90,7 @@ namespace TodoList.API.Controllers
         {
             try
             {
-                TodoListItem tdi = await _context.TodoListItems.FindAsync(id);
+                TodoListItem tdi = await _context.TodoListItems.FirstOrDefaultAsync(tdi => tdi.Id == id);
                 if (tdi != null)
                 {
                     var t = _context.Remove(tdi);
