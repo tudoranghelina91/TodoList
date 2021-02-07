@@ -36,7 +36,7 @@ namespace TodoList.API
                     builder =>
                     {
                         IConfiguration clientUrls = Configuration.GetSection("ClientUrls");
-                        builder.WithOrigins(clientUrls["dev"], clientUrls["prod"]);
+                        builder.WithOrigins(clientUrls["prod"]);
                         builder.WithHeaders(HeaderNames.ContentType);
                         builder.AllowAnyMethod();
                     });
