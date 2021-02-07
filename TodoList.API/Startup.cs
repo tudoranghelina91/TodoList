@@ -35,7 +35,8 @@ namespace TodoList.API
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.WithOrigins(Configuration["prod"]);
+                        IConfiguration clientUrls = Configuration.GetSection("ClientUrls");
+                        builder.WithOrigins(clientUrls["dev"], clientUrls["prod"]);
                         builder.WithHeaders(HeaderNames.ContentType);
                         builder.AllowAnyMethod();
                     });
