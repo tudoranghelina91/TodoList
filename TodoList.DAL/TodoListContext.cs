@@ -10,10 +10,11 @@ namespace TodoList.DAL
     {
         public TodoListContext()
         {
-            
+
         }
         public TodoListContext(DbContextOptions<TodoListContext> options) : base(options)
         {
+            this.Database.EnsureCreatedAsync();
         }
         public DbSet<TodoListItem> TodoListItems { get; set; }
     }
