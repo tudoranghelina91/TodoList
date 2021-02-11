@@ -10,7 +10,7 @@ export class TodoListService {
 
   constructor(private httpClient : HttpClient) { }
 
-  baseUri = "https://dostuff.azurewebsites.net/api/todolistitems";
+  baseUri = "https://apidostuff.azurewebsites.net/api/todolistitems";
 
   getTodoListItems(page : number, count : number)
   {
