@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using TodoList.Models;
+using DoStuff.Models;
 
-namespace TodoList.DAL
+namespace DoStuff.DAL
 {
     public class TodoListContext : DbContext
     {

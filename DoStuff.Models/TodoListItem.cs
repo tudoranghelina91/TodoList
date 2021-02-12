@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TodoList.Models
+namespace DoStuff.Models
 {
     public class TodoListItem
     {
