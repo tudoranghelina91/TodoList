@@ -12,9 +12,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TodoList.DAL;
+using DoStuff.DAL;
 
-namespace TodoList.API
+namespace DoStuff.API
 {
     public class Startup
     {

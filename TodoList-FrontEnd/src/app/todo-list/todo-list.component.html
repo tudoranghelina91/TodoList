@@ -4,20 +4,54 @@
     </div>
     <div class="container">
         <h1 *ngIf="success">Hi there!</h1>
-        <h3 *ngIf="success">Here are your tasks for the day!</h3>
+        <h3 *ngIf="success">Here are the tasks for {{todoList.name}}!</h3>
+        <!--#region Todo List Details -->
+        <div class="container">
+            <h1>{{detailText}} {{todoList.name}}</h1>
+            <form [formGroup]="todoListFormGroup" (ngSubmit)="onSubmit()">
+                <div>
+                    <mat-form-field class="input-headline">
+                        <mat-label class="input-label">Name</mat-label>
+                        <input required matInput formControlName="name">
+                    </mat-form-field>
+                </div>
+                <div>
+                    <mat-form-field class="input-normal">
+                        <mat-label class="input-label">Description</mat-label>
+                        <textarea matInput formControlName="description"></textarea>
+                    </mat-form-field>
+                </div>
+                <div>
+                    <button mat-flat-button color="primary">{{submitText}}</button>
+                    <button *ngIf="canDelete" type="button" mat-flat-button color="danger" [disabled]="!canDelete" (click)="deleteTodoList()">Delete</button>
+                    <button mat-flat-button type="button" color="secondary" (click)="goBack()">Go back</button>
+                </div>
+            </form>
+        </div>
+        <!--#endregion-->
+
+        <!--#region Todo List Items -->
+        <div class="container" *ngIf="this.todoListItems.length != 0">
+            <h2>{{todoList.name}} items:</h2>
+            <hr>
+        </div>
+        <div class="container" *ngIf="this.todoListItems.length == 0">
+            <p style="color: rgb(233, 139, 154);">There are no items added to this list yet</p>
+        </div>
         <mat-card class="container" *ngFor="let todoListItem of todoListItems; let i = index">
             <mat-card-title>{{pageEvent.pageIndex * pageEvent.pageSize + i + 1}}. <span [style.text-decoration]="todoListItem.completed ? 'line-through' : 'none'">{{todoListItem.name}}</span>
                 <mat-checkbox [(checked)]="todoListItem.completed" (change)="updateTodoListItemStatus(todoListItem)"></mat-checkbox>
             </mat-card-title>    
             <mat-card-subtitle>{{todoListItem.description}}</mat-card-subtitle>
             <mat-card-content>
-                <button mat-flat-button color="primary" [routerLink]="['/', todoListItem.id]">Edit Details</button>
+                <button mat-flat-button color="primary" [routerLink]="['./', todoListItem.id]">Edit Details</button>
             </mat-card-content>
         </mat-card>
+        <!--#endregion-->
     </div>
 </div>
 <div>
-    <button class="float-button" mat-fab [routerLink]="['/add']" aria-label="Add new item">
+    <button class="float-button" mat-fab [routerLink]="['./add']" aria-label="Add new list">
         <mat-icon class="float-button-icon">add_task</mat-icon>
     </button>
 </div>
