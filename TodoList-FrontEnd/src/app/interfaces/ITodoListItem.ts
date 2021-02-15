@@ -4,6 +4,7 @@ export interface TodoListItem
     name : String;
     description : String;
     completed : Boolean;
+    todoListId : Number;
 }
 
 export class TodoListItem
@@ -12,4 +13,5 @@ export class TodoListItem
     name : String;
     description : String;
     completed : Boolean;
+    todoListId : Number;
 }

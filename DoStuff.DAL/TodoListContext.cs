@@ -16,6 +16,7 @@ namespace DoStuff.DAL
         {
             this.Database.EnsureCreatedAsync();
         }
+        public DbSet<TodoList> TodoLists { get; set; }
         public DbSet<TodoListItem> TodoListItems { get; set; }
     }
 }
