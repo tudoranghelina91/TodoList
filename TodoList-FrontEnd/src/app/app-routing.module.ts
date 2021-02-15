@@ -22,7 +22,8 @@ const routes: Routes = [
   },
   {
     path: 'lists/add',
-    component: TodoListComponent
+    component: TodoListComponent,
+    pathMatch: 'full'
   },
   {
     path: 'lists/:todoListId',
