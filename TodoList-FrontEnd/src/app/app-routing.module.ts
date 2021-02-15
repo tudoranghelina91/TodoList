@@ -14,7 +14,7 @@ import { TodoListsComponent } from './todo-lists/todo-lists.component';
 const routes: Routes = [
   {
     path: '',
-    component: TodoListsComponent
+    redirectTo: 'lists'
   },
   {
     path: 'lists',
