@@ -35,10 +35,10 @@ namespace DoStuff.API.Controllers
                     .Take(count).ToListAsync();
         }
 
-        [HttpGet("GetItemsCount")]
-        public async Task<int> GetItemsCount()
+        [HttpGet("GetItemsCount/{list}")]
+        public async Task<int> GetItemsCount(int list)
         {
-            return await _context.TodoListItems.CountAsync();
+            return await _context.TodoListItems.Where(t => t.TodoListId == list).CountAsync();
         }
 
         // GET api/<TodoListItemsController>/5

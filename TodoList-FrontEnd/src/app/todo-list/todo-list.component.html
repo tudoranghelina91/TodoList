@@ -31,6 +31,13 @@
         <!--#endregion-->
 
         <!--#region Todo List Items -->
+        <div class="container" *ngIf="this.todoListItems.length != 0">
+            <h2>{{todoList.name}} items:</h2>
+            <hr>
+        </div>
+        <div class="container" *ngIf="this.todoListItems.length == 0">
+            <p style="color: rgb(233, 139, 154);">There are no items added to this list yet</p>
+        </div>
         <mat-card class="container" *ngFor="let todoListItem of todoListItems; let i = index">
             <mat-card-title>{{pageEvent.pageIndex * pageEvent.pageSize + i + 1}}. <span [style.text-decoration]="todoListItem.completed ? 'line-through' : 'none'">{{todoListItem.name}}</span>
                 <mat-checkbox [(checked)]="todoListItem.completed" (change)="updateTodoListItemStatus(todoListItem)"></mat-checkbox>

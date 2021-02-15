@@ -44,6 +44,8 @@ export class TodoListComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.todoListItems = new Array<TodoListItem>(0);
+    this.todoList = new TodoList();
     this.notLoaded = true;
     this.route.params.subscribe(params => {
       if (params['todoListId'] != null) {
@@ -58,6 +60,13 @@ export class TodoListComponent implements OnInit {
             this.canDelete = true;
             this.submitText = "Save Changes";
             this.notLoaded = false;
+
+            this.todoListService.getTodoListItemsCount(this.todoList.id)
+            .subscribe(length => this.pageEvent.length = length);
+        
+            this.pageEvent.pageSize = this.pageSizeOptions[0];
+            this.pageEvent.pageIndex = 0;
+            this.getServerData(this.pageEvent);
           }, error => {
             this.notLoaded = true;
           });
@@ -71,13 +80,6 @@ export class TodoListComponent implements OnInit {
     }, error => {
       this.notLoaded = true;
     })
-
-    this.todoListService.getTodoListItemsCount(this.todoList.id)
-    .subscribe(length => this.pageEvent.length = length);
-
-    this.pageEvent.pageSize = this.pageSizeOptions[0];
-    this.pageEvent.pageIndex = 0;
-    this.getServerData(this.pageEvent);
   }
 
   updateTodoListItemStatus(todoListItem : TodoListItem)
@@ -135,7 +137,7 @@ export class TodoListComponent implements OnInit {
           .subscribe(data => {
             this.todoList.name = data.name;
             this.todoList.description = data.description;
-            this.router.navigateByUrl('');
+            this.goBack();
           }, error => {
             this._snackBar.open(error.message, null, { 'duration' : 5000 });
           });
@@ -144,7 +146,7 @@ export class TodoListComponent implements OnInit {
         .subscribe(data => {
           this.todoList.name = data.name;
           this.todoList.description = data.description;
-          this.router.navigateByUrl('');
+          this.goBack();
         }, error => {
           this._snackBar.open(error.message, null, { 'duration' : 5000 });
         });
@@ -170,7 +172,7 @@ export class TodoListComponent implements OnInit {
         this.todoListService.deleteTodoList(this.todoList.id)
         .subscribe(data => {
           this._snackBar.open(data.name + " has been deleted!", null, {'duration' : 5000});
-          this.router.navigateByUrl('');
+          this.goBack();
         }, error => {
           this._snackBar.open(error.message, null, {'duration' : 5000});
         });
