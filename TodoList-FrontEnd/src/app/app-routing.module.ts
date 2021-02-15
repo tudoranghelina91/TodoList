@@ -13,6 +13,10 @@ import { TodoListsComponent } from './todo-lists/todo-lists.component';
 
 const routes: Routes = [
   {
+    path: '',
+    component: TodoListsComponent
+  },
+  {
     path: 'lists',
     component: TodoListsComponent
   },
