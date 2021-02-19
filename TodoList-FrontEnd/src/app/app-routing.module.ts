@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { PreventUndefinedNullGuard } from './prevent-undefined-null.guard';
 import { TodoListItemComponent } from './todo-list-item/todo-list-item.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { TodoListsComponent } from './todo-lists/todo-lists.component';
@@ -14,61 +15,40 @@ import { TodoListsComponent } from './todo-lists/todo-lists.component';
 const routes: Routes = [
   {
     path: '',
-    component: TodoListsComponent
+    redirectTo: 'lists',
+    pathMatch: 'full'
   },
   {
     path: 'lists',
-    component: TodoListsComponent
+    component: TodoListsComponent,
   },
   {
     path: 'lists/add',
-    component: TodoListComponent
+    component: TodoListComponent,
   },
   {
     path: 'lists/:todoListId',
     component: TodoListComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
+    canActivate: [PreventUndefinedNullGuard]
   },
   {
     path: 'lists/:todoListId/add',
     component: TodoListItemComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
+    canActivate: [PreventUndefinedNullGuard]
   },
   {
     path: 'lists/:todoListId/:todoListItemId',
     component: TodoListItemComponent,
     pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: 'lists',
+    pathMatch: 'full'
   }
 ];
-  //   path: 'lists',
-  //   component: TodoListsComponent,
-  //   children: [
-  //     {
-  //       path: 'add',
-  //       component: TodoListComponent
-  //     },
-  //     {
-  //       path: ':id',
-  //       component: TodoListComponent,
-  //       pathMatch: 'full'
-  //     },
-  //     {
-  //       path: 'items',
-  //       component: TodoListsComponent,
-  //       children: [
-  //         {
-  //           path: 'add',
-  //           component: TodoListItemComponent
-  //         },
-  //         {
-  //           path: ':id', 
-  //           component: TodoListItemComponent,
-  //           pathMatch: 'full'
-  //         }
-  //       ]
-  //     }
-  //   ]
-  // }
 
 
 @NgModule({
