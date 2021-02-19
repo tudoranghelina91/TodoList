@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PreventUndefinedNullGuard } from './prevent-undefined-null.guard';
 import { TodoListItemComponent } from './todo-list-item/todo-list-item.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { TodoListsComponent } from './todo-lists/todo-lists.component';
@@ -30,13 +29,11 @@ const routes: Routes = [
     path: 'lists/:todoListId',
     component: TodoListComponent,
     pathMatch: 'full',
-    canActivate: [PreventUndefinedNullGuard]
   },
   {
     path: 'lists/:todoListId/add',
     component: TodoListItemComponent,
     pathMatch: 'full',
-    canActivate: [PreventUndefinedNullGuard]
   },
   {
     path: 'lists/:todoListId/:todoListItemId',

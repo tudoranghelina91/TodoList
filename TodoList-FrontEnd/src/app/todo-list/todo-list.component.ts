@@ -52,6 +52,9 @@ export class TodoListComponent implements OnInit {
         this.todoListService.getTodoList(params['todoListId'])
         .subscribe(data => {
             this.todoList = data;
+            if (this.todoList == null) {
+              this.goBack();
+            }
             this.todoListFormGroup.get('id').setValue(data.id);
             this.todoListFormGroup.get('name').setValue(data.name);
             this.todoListFormGroup.get('description').setValue(data.description);
@@ -69,6 +72,7 @@ export class TodoListComponent implements OnInit {
             this.getServerData(this.pageEvent);
           }, error => {
             this.notLoaded = true;
+            this.goBack();
           });
         } 
         else {
@@ -79,6 +83,7 @@ export class TodoListComponent implements OnInit {
       }
     }, error => {
       this.notLoaded = true;
+      this.goBack();
     })
   }
 
