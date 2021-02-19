@@ -4,72 +4,41 @@ import { TodoListItemComponent } from './todo-list-item/todo-list-item.component
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { TodoListsComponent } from './todo-lists/todo-lists.component';
 
-
-// const routes: Routes = [
-//   {path: '', component : TodoListComponent},
-//   {path: 'add', component: TodoListItemComponent},
-//   {path: ':id', component : TodoListItemComponent, pathMatch: 'full'}
-// ];
-
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'lists'
+    redirectTo: 'lists',
+    pathMatch: 'full'
   },
   {
     path: 'lists',
-    component: TodoListsComponent
+    component: TodoListsComponent,
   },
   {
     path: 'lists/add',
     component: TodoListComponent,
-    pathMatch: 'full'
   },
   {
     path: 'lists/:todoListId',
     component: TodoListComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'lists/:todoListId/add',
     component: TodoListItemComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'lists/:todoListId/:todoListItemId',
     component: TodoListItemComponent,
     pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: 'lists',
+    pathMatch: 'full'
   }
 ];
-  //   path: 'lists',
-  //   component: TodoListsComponent,
-  //   children: [
-  //     {
-  //       path: 'add',
-  //       component: TodoListComponent
-  //     },
-  //     {
-  //       path: ':id',
-  //       component: TodoListComponent,
-  //       pathMatch: 'full'
-  //     },
-  //     {
-  //       path: 'items',
-  //       component: TodoListsComponent,
-  //       children: [
-  //         {
-  //           path: 'add',
-  //           component: TodoListItemComponent
-  //         },
-  //         {
-  //           path: ':id', 
-  //           component: TodoListItemComponent,
-  //           pathMatch: 'full'
-  //         }
-  //       ]
-  //     }
-  //   ]
-  // }
 
 
 @NgModule({

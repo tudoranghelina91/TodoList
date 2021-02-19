@@ -50,12 +50,12 @@
         <!--#endregion-->
     </div>
 </div>
-<div>
+<div *ngIf="todoList.id != null">
     <button class="float-button" mat-fab [routerLink]="['./add']" aria-label="Add new list">
         <mat-icon class="float-button-icon">add_task</mat-icon>
     </button>
 </div>
-<mat-paginator [length]="pageEvent.length"
+<mat-paginator *ngIf="todoList.id != null" [length]="pageEvent.length"
                 [pageSize]="pageEvent.pageSize"
                 [pageSizeOptions]="pageSizeOptions"
                 (page)="pageEvent = getServerData($event)">
