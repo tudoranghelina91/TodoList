@@ -4,13 +4,6 @@ import { TodoListItemComponent } from './todo-list-item/todo-list-item.component
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { TodoListsComponent } from './todo-lists/todo-lists.component';
 
-
-// const routes: Routes = [
-//   {path: '', component : TodoListComponent},
-//   {path: 'add', component: TodoListItemComponent},
-//   {path: ':id', component : TodoListItemComponent, pathMatch: 'full'}
-// ];
-
 const routes: Routes = [
   {
     path: '',
