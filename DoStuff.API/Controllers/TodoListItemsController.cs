@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TodoList.Models;
-using TodoList.DAL;
+using DoStuff.Models;
+using DoStuff.DAL;
 using Microsoft.EntityFrameworkCore;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace TodoList.API.Controllers
+namespace DoStuff.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -27,18 +27,18 @@ namespace TodoList.API.Controllers
             return await _context.TodoListItems.ToListAsync();
         }
 
-        [HttpGet("{page}/{count}")]
-        public async Task<IEnumerable<TodoListItem>> Get(int page, int count)
+        [HttpGet("{list}/{page}/{count}")]
+        public async Task<IEnumerable<TodoListItem>> Get(int list, int page, int count)
         {
-                return await _context.TodoListItems.OrderByDescending(tdi => tdi.Id)
+            return await _context.TodoListItems.Where(tdi => tdi.TodoListId == list).OrderByDescending(tdi => tdi.Id)
                 .Skip((page - 1) * count)
-                .Take(count).ToListAsync();
+                    .Take(count).ToListAsync();
         }
 
-        [HttpGet("GetItemsCount")]
-        public async Task<int> GetItemsCount()
+        [HttpGet("GetItemsCount/{list}")]
+        public async Task<int> GetItemsCount(int list)
         {
-            return await _context.TodoListItems.CountAsync();
+            return await _context.TodoListItems.Where(t => t.TodoListId == list).CountAsync();
         }
 
         // GET api/<TodoListItemsController>/5
@@ -50,7 +50,7 @@ namespace TodoList.API.Controllers
 
         // POST api/<TodoListItemsController>
         [HttpPost]
-        public async Task<ActionResult<TodoListItem>> Post([FromBody] TodoListItem todoListItem)
+        public async Task<ActionResult<TodoListItem>> Post(TodoListItem todoListItem)
         {
             try
             {
@@ -66,16 +66,23 @@ namespace TodoList.API.Controllers
 
         // PUT api/<TodoListItemsController>/5
         [HttpPut]
-        public async Task<ActionResult<TodoListItem>> Put([FromBody] TodoListItem todoListItem)
+        public async Task<ActionResult<TodoListItem>> Put(TodoListItem todoListItem)
         {
             try
             {
-                TodoListItem tdi = await _context.TodoListItems.FindAsync(todoListItem.Id);
-                tdi.Name = todoListItem.Name;
-                tdi.Description = todoListItem.Description;
-                tdi.Completed = todoListItem.Completed;
-                await _context.SaveChangesAsync();
-                return tdi;
+                TodoListItem tdi = await _context.TodoListItems.FirstOrDefaultAsync(t => t.Id == todoListItem.Id);
+                if (tdi != null)
+                {
+                    tdi.Name = todoListItem.Name;
+                    tdi.Description = todoListItem.Description;
+                    tdi.Completed = todoListItem.Completed;
+                    await _context.SaveChangesAsync();
+                    return tdi;
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
             catch
             {
@@ -97,7 +104,7 @@ namespace TodoList.API.Controllers
                     return t.Entity;
                 }
 
-                return null;
+                return NotFound();
             }
             catch
             {

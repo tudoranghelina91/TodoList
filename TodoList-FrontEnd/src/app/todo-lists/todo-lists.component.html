@@ -1,0 +1,27 @@
+<div class="container todolist-container">
+    <div class="center-screen" *ngIf="notLoaded">
+        <mat-spinner></mat-spinner>
+    </div>
+    <div class="container">
+        <h1 *ngIf="success">Hi there!</h1>
+        <h3 *ngIf="success">Here are your lists!</h3>
+        <mat-card class="container" *ngFor="let todoList of todoLists; let i = index">
+            <mat-card-title>{{pageEvent.pageIndex * pageEvent.pageSize + i + 1}}. <span>{{todoList.name}}</span>
+            </mat-card-title>
+            <mat-card-subtitle>{{todoList.description}}</mat-card-subtitle>
+            <mat-card-content>
+                <button mat-flat-button color="primary" [routerLink]="['/lists', todoList.id]">Edit Details</button>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+<div>
+    <button class="float-button" mat-fab [routerLink]="['./add']" aria-label="Add new list">
+        <mat-icon class="float-button-icon">add_task</mat-icon>
+    </button>
+</div>
+<mat-paginator [length]="pageEvent.length"
+                [pageSize]="pageEvent.pageSize"
+                [pageSizeOptions]="pageSizeOptions"
+                (page)="pageEvent = getServerData($event)">
+</mat-paginator>

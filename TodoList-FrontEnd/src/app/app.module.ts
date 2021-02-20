@@ -19,13 +19,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TodoListItemComponent } from './todo-list-item/todo-list-item.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
+import { TodoListsComponent } from './todo-lists/todo-lists.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TodoListComponent,
     TodoListItemComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    TodoListsComponent
   ],
   imports: [
     BrowserModule,

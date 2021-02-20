@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TodoList.Scaffolding
+namespace DoStuff.Scaffolding
 {
     class Program
     {

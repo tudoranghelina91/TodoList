@@ -30,21 +30,27 @@ export class TodoListItemComponent implements OnInit {
       id : new FormControl(),
       name : new FormControl(),
       description : new FormControl(),
-      completed : new FormControl()
+      completed : new FormControl(),
+      todoListId : new FormControl()
     });
    }
 
   ngOnInit(): void {
+    this.todoListItem = new TodoListItem();
     this.notLoaded = true;
     this.route.params.subscribe(params => {
-      if (params['id'] != null) {
-        this.todoListService.getTodoListItem(params['id'])
+      if (params['todoListItemId'] != null && this.route.snapshot.params['todoListId'] != null) {
+        this.todoListService.getTodoListItem(params['todoListItemId'])
         .subscribe(data => {
             this.todoListItem = data;
+            if (this.todoListItem == null) {
+              this.goBack();
+            }
             this.todoListItemFormGroup.get('id').setValue(data.id);
             this.todoListItemFormGroup.get('name').setValue(data.name);
             this.todoListItemFormGroup.get('description').setValue(data.description);
             this.todoListItemFormGroup.get('completed').setValue(data.completed);
+            this.todoListItemFormGroup.get('todoListId').setValue(data.todoListId);
 
             this.detailText = "Edit";
             this.canDelete = true;
@@ -52,11 +58,12 @@ export class TodoListItemComponent implements OnInit {
             this.notLoaded = false;
           }, error => {
             this.notLoaded = true;
+            this.goBack();
           });
-        } 
-        else {
+        } else {
           this.todoListItem = new TodoListItem();
           this.todoListItem.completed = false;
+          this.todoListItem.todoListId = this.route.snapshot.params['todoListId'];
           this.todoListItemFormGroup.get('completed').setValue(false);
           this.submitText = "Add";
           this.detailText = "Add New Item";
@@ -64,6 +71,7 @@ export class TodoListItemComponent implements OnInit {
       }
     }, error => {
       this.notLoaded = true;
+      this.goBack();
     })
   }
 
@@ -71,7 +79,8 @@ export class TodoListItemComponent implements OnInit {
     let todoListItem = new TodoListItem()
 
     todoListItem.id = this.todoListItem.id;
-    console.log(this.todoListItemFormGroup);
+    todoListItem.todoListId = this.todoListItem.todoListId;
+    
     if (this.todoListItemFormGroup.get('name').value != null)
     {
       todoListItem.name = String(this.todoListItemFormGroup.get('name').value).trim();
@@ -92,7 +101,8 @@ export class TodoListItemComponent implements OnInit {
             this.todoListItem.name = data.name;
             this.todoListItem.description = data.description;
             this.todoListItem.completed = data.completed;
-            this.router.navigateByUrl('');
+            this.todoListItem.todoListId = data.todoListId;
+            this.goBack();
           }, error => {
             this._snackBar.open(error.message, null, { 'duration' : 5000 });
           });
@@ -102,7 +112,8 @@ export class TodoListItemComponent implements OnInit {
           this.todoListItem.name = data.name;
           this.todoListItem.description = data.description;
           this.todoListItem.completed = data.completed;
-          this.router.navigateByUrl('');
+          this.todoListItem.todoListId = data.todoListId;
+          this.goBack();
         }, error => {
           this._snackBar.open(error.message, null, { 'duration' : 5000 });
         });
@@ -114,7 +125,7 @@ export class TodoListItemComponent implements OnInit {
   }
 
   goBack() : void {
-    this.router.navigateByUrl('');
+    this.router.navigateByUrl(`lists/${this.route.snapshot.params['todoListId']}`);
   }
 
   deleteTodoListItem() : void {
