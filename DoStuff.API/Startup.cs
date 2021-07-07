@@ -28,7 +28,7 @@ namespace DoStuff.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TodoListContext>(options => options.UseSqlite(Configuration.GetConnectionString("dev")));
+            services.AddDbContext<TodoListContext>(options => options.UseSqlite(Configuration.GetConnectionString("prod")));
             services.AddControllers();
             services.AddCors(options =>
             {
