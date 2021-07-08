@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { LoginComponent } from './login/login.component';
 import { TodoListItemComponent } from './todo-list-item/todo-list-item.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { TodoListsComponent } from './todo-lists/todo-lists.component';
@@ -7,8 +8,12 @@ import { TodoListsComponent } from './todo-lists/todo-lists.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'lists',
+    redirectTo: 'login',
     pathMatch: 'full'
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
   },
   {
     path: 'lists',

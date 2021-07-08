@@ -18,5 +18,6 @@ namespace DoStuff.DAL
         }
         public DbSet<TodoList> TodoLists { get; set; }
         public DbSet<TodoListItem> TodoListItems { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
