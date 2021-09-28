@@ -13,8 +13,12 @@ export class LoginInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    request.headers.set('Authorization', localStorage.getItem('accessToken'));
-    request.headers.set('Expires', localStorage.getItem('expires'));
+    request = request.clone({
+      setHeaders: {
+        'Authorization': `${localStorage.getItem('accessToken')}`,
+      },
+    });
+
     return next.handle(request);
   }
 }
