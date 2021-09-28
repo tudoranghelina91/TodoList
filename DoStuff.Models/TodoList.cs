@@ -12,6 +12,8 @@ namespace DoStuff.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public IEnumerable<TodoListItem> TodoListItems { get; set; }
+        public long UserId { get; set; }
+        public User User { get; set; }
         public TodoList()
         {
             TodoListItems = new HashSet<TodoListItem>();
