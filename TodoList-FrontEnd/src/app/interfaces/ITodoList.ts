@@ -6,6 +6,7 @@ export interface TodoList
     name : String;
     description : String;
     todoListItems : TodoListItem[];
+    userId : number;
 }
 
 export class TodoList
@@ -14,4 +15,5 @@ export class TodoList
     name : String;
     description : String;
     todoListItems : TodoListItem[];
+    userId : number;
 }
