@@ -15,37 +15,70 @@ namespace DoStuff.API.Controllers
     public class TodoListItemsController : ControllerBase
     {
         private readonly TodoListContext _context;
-        public TodoListItemsController(TodoListContext context)
+        private readonly IAuthService _authService;
+        public TodoListItemsController(TodoListContext context, IAuthService authService)
         {
             _context = context;
+            _authService = authService;
         }
 
         // GET: api/<TodoListItemsController>
         [HttpGet]
-        public async Task<IEnumerable<TodoListItem>> Get()
+        public async Task<ActionResult<IEnumerable<TodoListItem>>> Get()
         {
-            return await _context.TodoListItems.ToListAsync();
-        }
+            var u = await _context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString());
+            if (_authService.IsAuthorized(u))
+            {
+                return await _context.TodoListItems.Where(t => t.TodoList.User == u).ToListAsync();
+            }
 
-        [HttpGet("{list}/{page}/{count}")]
-        public async Task<IEnumerable<TodoListItem>> Get(int list, int page, int count)
-        {
-            return await _context.TodoListItems.Where(tdi => tdi.TodoListId == list).OrderByDescending(tdi => tdi.Id)
-                .Skip((page - 1) * count)
-                    .Take(count).ToListAsync();
-        }
-
-        [HttpGet("GetItemsCount/{list}")]
-        public async Task<int> GetItemsCount(int list)
-        {
-            return await _context.TodoListItems.Where(t => t.TodoListId == list).CountAsync();
+            return Unauthorized();
         }
 
         // GET api/<TodoListItemsController>/5
         [HttpGet("{id}")]
-        public async Task<TodoListItem> Get(int id)
+        public async Task<ActionResult<TodoListItem>> Get(int id)
         {
-            return await _context.TodoListItems.FirstOrDefaultAsync(t => t.Id == id);
+            var u = await _context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString());
+
+            if (_authService.IsAuthorized(u))
+            {
+                return await _context.TodoListItems.FirstOrDefaultAsync(t => t.Id == id && t.TodoList.User == u);
+            }
+
+            return Unauthorized();
+        }
+
+        [HttpGet("{list}/{page}/{count}")]
+        public async Task<ActionResult<IEnumerable<TodoListItem>>> Get(int list, int page, int count)
+        {
+            var u = await _context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString());
+
+            if (_authService.IsAuthorized(u))
+            {
+                return await _context.TodoListItems
+                    .Where(tdi => tdi.TodoListId == list && tdi.TodoList.User == u)
+                    .OrderByDescending(tdi => tdi.Id)
+                    .Skip((page - 1) * count)
+                    .Take(count).ToListAsync();
+            }
+
+            return Unauthorized();
+        }
+
+        [HttpGet("GetItemsCount/{list}")]
+        public async Task<ActionResult<int>> GetItemsCount(int list)
+        {
+            var u = await _context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString());
+
+            if (_authService.IsAuthorized(u))
+            {
+                return await _context.TodoListItems
+                    .Where(t => t.TodoListId == list && t.TodoList.User == u)
+                    .CountAsync();
+            }
+
+            return Unauthorized();
         }
 
         // POST api/<TodoListItemsController>
@@ -54,9 +87,16 @@ namespace DoStuff.API.Controllers
         {
             try
             {
-                var t = await _context.TodoListItems.AddAsync(todoListItem);
-                await _context.SaveChangesAsync();
-                return t.Entity;
+                var u = await _context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString());
+
+                if (_authService.IsAuthorized(u))
+                {
+                    var t = await _context.TodoListItems.AddAsync(todoListItem);
+                    await _context.SaveChangesAsync();
+                    return t.Entity;
+                }
+
+                return Unauthorized();
             }
             catch
             {
@@ -70,19 +110,26 @@ namespace DoStuff.API.Controllers
         {
             try
             {
-                TodoListItem tdi = await _context.TodoListItems.FirstOrDefaultAsync(t => t.Id == todoListItem.Id);
-                if (tdi != null)
+                var u = await _context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString());
+
+                if (_authService.IsAuthorized(u))
                 {
+                    TodoListItem tdi = await _context.TodoListItems.FirstOrDefaultAsync(t => t.Id == todoListItem.Id && t.TodoList.User == u);
+
+                    if (tdi == null)
+                    {
+                        return NotFound();
+                    }
+
                     tdi.Name = todoListItem.Name;
                     tdi.Description = todoListItem.Description;
                     tdi.Completed = todoListItem.Completed;
                     await _context.SaveChangesAsync();
                     return tdi;
                 }
-                else
-                {
-                    return NotFound();
-                }
+
+                return Unauthorized();
+
             }
             catch
             {
@@ -96,15 +143,23 @@ namespace DoStuff.API.Controllers
         {
             try
             {
-                TodoListItem tdi = await _context.TodoListItems.FirstOrDefaultAsync(tdi => tdi.Id == id);
-                if (tdi != null)
+                var u = await _context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString());
+
+                if (_authService.IsAuthorized(u))
                 {
-                    var t = _context.Remove(tdi);
-                    await _context.SaveChangesAsync();
-                    return t.Entity;
+                    TodoListItem tdi = await _context.TodoListItems.FirstOrDefaultAsync(tdi => tdi.Id == id);
+                    if (tdi != null)
+                    {
+                        var t = _context.Remove(tdi);
+                        await _context.SaveChangesAsync();
+                        return t.Entity;
+                    }
+
+                    return NotFound();
                 }
 
-                return NotFound();
+                return Unauthorized();
+
             }
             catch
             {
