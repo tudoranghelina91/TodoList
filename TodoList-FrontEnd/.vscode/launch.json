@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "edge",
+            "name": "Launch Edge",
             "request": "launch",
-            "name": "Launch Edge against localhost",
-            "url": "http://localhost:4200",
+            "type": "pwa-msedge",
+            "url": "https://localhost:4200",
             "webRoot": "${workspaceFolder}"
         }
     ]
