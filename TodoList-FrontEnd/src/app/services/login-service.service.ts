@@ -36,7 +36,6 @@ export class LoginServiceService {
         
         if (user.accessToken != null) {
           localStorage.setItem("accessToken", user.accessToken);
-          localStorage.setItem("expires", user.expiresIn.toString());
 
           this.router.navigateByUrl('./lists');
         }
