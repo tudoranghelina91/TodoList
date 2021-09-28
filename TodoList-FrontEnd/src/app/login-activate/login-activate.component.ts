@@ -11,7 +11,6 @@ export class LoginActivate implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean>|Promise<boolean>|boolean {
-    console.log('triggered');
     if (!this.authService.getLoginStatus()) {
       this.router.navigate(['login']);
     }
