@@ -3,7 +3,7 @@
         <mat-spinner></mat-spinner>
     </div>
     <div class="container">
-        <h1 *ngIf="success">Hi there!</h1>
+        <h1 *ngIf="success">Hi there {{user.email}}!</h1>
         <h3 *ngIf="success">Here are your lists!</h3>
         <mat-card class="container" *ngFor="let todoList of todoLists; let i = index">
             <mat-card-title>{{pageEvent.pageIndex * pageEvent.pageSize + i + 1}}. <span>{{todoList.name}}</span>
