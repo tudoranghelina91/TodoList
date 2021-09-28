@@ -11,7 +11,7 @@ export class TodoListService {
 
   constructor(private httpClient : HttpClient) { }
 
-  baseUri = "https://localhost:44307/api";
+  baseUri = "https://localhost:5001/api";
   listUri = "todolists";
   itemsUri = "todolistitems"
 
