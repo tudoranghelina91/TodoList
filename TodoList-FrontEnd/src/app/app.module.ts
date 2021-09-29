@@ -23,6 +23,7 @@ import { TodoListsComponent } from './todo-lists/todo-lists.component';
 import { LoginComponent } from './login/login.component';
 import { LoginInterceptor } from './interceptors/login.interceptor';
 import { SignupComponent } from './signup/signup.component';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { SignupComponent } from './signup/signup.component';
     TodoListsComponent,
     LoginComponent,
     SignupComponent,
+    LogoutComponent,
   ],
   imports: [
     BrowserModule,

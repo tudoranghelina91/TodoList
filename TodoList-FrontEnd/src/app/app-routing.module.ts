@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginActivate } from './login-activate/login-activate.component';
 import { LoginComponent } from './login/login.component';
+import { LogoutComponent } from './logout/logout.component';
 import { RegisterActivate } from './register-activate/register-activate.component';
 import { SignupComponent } from './signup/signup.component';
 import { TodoListItemComponent } from './todo-list-item/todo-list-item.component';
@@ -17,6 +18,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'logout',
+    component: LogoutComponent
   },
   {
     path: 'register',
