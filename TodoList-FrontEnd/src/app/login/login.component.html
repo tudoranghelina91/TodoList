@@ -1,12 +1,26 @@
-<h1>Do Stuff!!!</h1>
-<form [formGroup]="loginFormGroup" (ngSubmit)="login()">
-    <mat-form-field class="input-headline">
-        <mat-label class="input-label">Email</mat-label>
-        <input required matInput formControlName="email" type="email">
-    </mat-form-field>
-    <mat-form-field class="input-headline">
-        <mat-label class="input-label">Password</mat-label>
-        <input required matInput formControlName="password" type="password">
-    </mat-form-field>
-    <button mat-flat-button color="primary">Login</button>
-</form>
+<div class="center-screen">
+    <h1>Do Stuff!!!</h1>
+    <mat-card class="register-login">
+        <form [formGroup]="loginFormGroup" (ngSubmit)="login()">
+            <div>
+                <mat-form-field class="input-normal">
+                    <mat-label class="input-normal">Email</mat-label>
+                    <input required matInput formControlName="email" type="email">
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field class="input-normal">
+                    <mat-label class="input-normal">Password</mat-label>
+                    <input required matInput formControlName="password" type="password">
+                </mat-form-field>
+            </div>
+            <div>
+                <button mat-flat-button color="primary">Login</button>
+            </div>
+        </form>
+        <br />
+        <div>
+            <a href="register">Don't have an account?</a>
+        </div>
+    </mat-card>
+</div>
