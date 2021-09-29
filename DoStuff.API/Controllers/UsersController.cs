@@ -23,8 +23,7 @@ namespace DoStuff.API.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<User>> Login(User user)
         {
-            var utcNowTimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
-            User u = await this._context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString() && u.ExpiresIn > utcNowTimestamp);
+            User u = await GetUserByAccessToken();
 
             if (u != null)
             {
@@ -55,6 +54,12 @@ namespace DoStuff.API.Controllers
             }
 
             return Unauthorized();
+        }
+
+        private async Task<User> GetUserByAccessToken()
+        {
+            var utcNowTimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
+            return await this._context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString() && u.ExpiresIn > utcNowTimestamp);
         }
 
         [HttpPost("Register")]
@@ -89,8 +94,7 @@ namespace DoStuff.API.Controllers
         [HttpGet("Details")]
         public async Task<ActionResult<User>> GetUserDetails()
         {
-            var utcNowTimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
-            return await this._context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString() && u.ExpiresIn > utcNowTimestamp);
+            return await GetUserByAccessToken();
         }
     }
 }
