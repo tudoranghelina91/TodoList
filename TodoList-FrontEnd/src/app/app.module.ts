@@ -32,7 +32,7 @@ import { SignupComponent } from './signup/signup.component';
     ConfirmationDialogComponent,
     TodoListsComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
   ],
   imports: [
     BrowserModule,

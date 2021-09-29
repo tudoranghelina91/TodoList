@@ -38,6 +38,7 @@ export class SignupComponent implements OnInit {
     user.hashedPassword = this.registerFormGroup.get('password').value;
 
     this.loginService.register(user);
+    this.loginService.login(user);
   }
 
 }

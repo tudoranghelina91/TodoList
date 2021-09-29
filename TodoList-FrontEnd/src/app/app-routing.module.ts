@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginActivate } from './login-activate/login-activate.component';
 import { LoginComponent } from './login/login.component';
+import { RegisterActivate } from './register-activate/register-activate.component';
+import { SignupComponent } from './signup/signup.component';
 import { TodoListItemComponent } from './todo-list-item/todo-list-item.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { TodoListsComponent } from './todo-lists/todo-lists.component';
@@ -15,6 +17,13 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'register',
+    component: SignupComponent,
+    canActivate: [
+      RegisterActivate
+    ]
   },
   {
     path: 'lists',
@@ -68,6 +77,9 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule],
-  providers: [LoginActivate]
+  providers: [
+    LoginActivate,
+    RegisterActivate
+  ]
 })
 export class AppRoutingModule { }
