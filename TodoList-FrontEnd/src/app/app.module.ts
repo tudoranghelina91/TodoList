@@ -22,6 +22,7 @@ import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-
 import { TodoListsComponent } from './todo-lists/todo-lists.component';
 import { LoginComponent } from './login/login.component';
 import { LoginInterceptor } from './interceptors/login.interceptor';
+import { SignupComponent } from './signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { LoginInterceptor } from './interceptors/login.interceptor';
     TodoListItemComponent,
     ConfirmationDialogComponent,
     TodoListsComponent,
-    LoginComponent
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,

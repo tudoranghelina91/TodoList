@@ -6,38 +6,38 @@ import { User } from '../interfaces/IUser';
 import { LoginServiceService } from '../services/login-service.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-signup',
+  templateUrl: './signup.component.html',
+  styleUrls: ['./signup.component.css']
 })
-export class LoginComponent implements OnInit {
-
+export class SignupComponent implements OnInit {
+  
   private loginService : LoginServiceService;
-
-  constructor(httpClient : HttpClient, private router : Router, private route : ActivatedRoute) { 
-    this.loginFormGroup = new FormGroup ({
-      email : new FormControl(),
-      password : new FormControl()
+  
+  constructor(httpClient : HttpClient, private router : Router, private route : ActivatedRoute) {
+    this.registerFormGroup = new FormGroup({
+      email: new FormControl(),
+      password: new FormControl()
     });
 
     this.loginService = new LoginServiceService(httpClient, router);
+   
   }
-
-  public loginFormGroup : FormGroup;
 
   ngOnInit(): void {
     let user : User = new User();
-
     user.accessToken = localStorage.getItem('accessToken');
-    this.loginService.login(user);
   }
 
-  login()
+  public registerFormGroup : FormGroup;
+
+  register()
   {
     let user : User = new User();
-    user.email = this.loginFormGroup.get('email').value;
-    user.hashedPassword = this.loginFormGroup.get('password').value;
+    user.email = this.registerFormGroup.get('email').value;
+    user.hashedPassword = this.registerFormGroup.get('password').value;
 
-    this.loginService.login(user);
+    this.loginService.register(user);
   }
+
 }
