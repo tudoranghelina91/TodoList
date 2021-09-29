@@ -43,7 +43,7 @@ p, .mat-card-subtitle {
     justify-content: center;
     align-items: center;
     text-align: center;
-    min-height: 100vh;
+    min-height: 70vh;
 }
 
 mat-card.register-login {
@@ -61,10 +61,17 @@ app-header {
     margin-bottom: 20px;
     display: flex;
     width: 100vw;
+    z-index: 1;
 }
 
 #content {
     position: absolute;
     top: 100px;
     width: 100vw;
+}
+
+h1.app-title {
+    font-family: 'Dancing Script', cursive;
+    color: palevioletred;
+    font-size: 64px;
 }
