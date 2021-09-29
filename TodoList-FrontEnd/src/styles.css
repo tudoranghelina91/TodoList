@@ -49,3 +49,22 @@ p, .mat-card-subtitle {
 mat-card.register-login {
     padding: 50px;
 }
+
+app-header {
+    position: fixed;
+    top:0;
+    left: 0;
+    align-items: flex-end;
+    padding: 20px;
+    background-color: white;
+    margin: 0px;
+    margin-bottom: 20px;
+    display: flex;
+    width: 100vw;
+}
+
+#content {
+    position: absolute;
+    top: 100px;
+    width: 100vw;
+}
