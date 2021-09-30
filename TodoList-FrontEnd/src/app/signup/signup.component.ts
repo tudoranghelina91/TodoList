@@ -14,6 +14,7 @@ export class SignupComponent implements OnInit {
   
   private loginService : LoginServiceService;
   private user : User = new User();
+  userExists : boolean;
 
   constructor(httpClient : HttpClient, private router : Router, private route : ActivatedRoute) {
     this.registerFormGroup = new FormGroup ({
@@ -36,14 +37,9 @@ export class SignupComponent implements OnInit {
 
   register()
   {
-    let user : User = new User();
-    user.email = this.registerFormGroup.get('email').value;
-    user.hashedPassword = this.registerFormGroup.get('password').value;
-
-    let errorData = this.loginService.register(user);
-
-    if (!errorData) {
-      this.loginService.login(user);
-    }
+    this.user.email = this.email.value;
+    this.user.hashedPassword = this.password.value;
+    this.loginService.register(this.user);
+    this.userExists = true;
   }
 }

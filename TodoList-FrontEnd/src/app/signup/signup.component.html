@@ -30,5 +30,6 @@
         <mat-error *ngIf="password.errors?.minlength">Password too short</mat-error>
         <mat-error *ngIf="password.errors?.maxlength">Password too long</mat-error>
         <mat-error *ngIf="password.errors?.required">Password required</mat-error>
+        <mat-error *ngIf="userExists">That Email is already registered</mat-error>
     </mat-card>
 </div>

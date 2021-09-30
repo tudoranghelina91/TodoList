@@ -16,16 +16,13 @@ export class LoginServiceService {
   loginUri = "login";
   detailsUri = "details";
   loginStatusUri = "loginStatus";
+  check = "loginStatus";
   
   register(user : User)
   {
-    let errorData : any;
-    this.httpClient.post<User>(`${this.baseUri}/${this.usersUri}/${this.registerUri}`, user).subscribe(() => {}, error => {
-      errorData = error.error;
+    this.httpClient.post(`${this.baseUri}/${this.usersUri}/${this.registerUri}`, user).subscribe(() => { }, error => { }, () => {
+      this.login(user);
     });
-
-    errorData = setTimeout(() => errorData, 5000);
-    return errorData;
   }
 
   login(user : User)
