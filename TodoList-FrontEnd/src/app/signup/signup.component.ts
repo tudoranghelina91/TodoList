@@ -37,8 +37,11 @@ export class SignupComponent implements OnInit {
     user.email = this.registerFormGroup.get('email').value;
     user.hashedPassword = this.registerFormGroup.get('password').value;
 
-    this.loginService.register(user);
-    this.loginService.login(user);
+    let errorData = this.loginService.register(user);
+
+    if (!errorData) {
+      this.loginService.login(user);
+    }
   }
 
 }

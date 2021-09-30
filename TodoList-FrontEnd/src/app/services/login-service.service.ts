@@ -19,7 +19,13 @@ export class LoginServiceService {
   
   register(user : User)
   {
-    this.httpClient.post<User>(`${this.baseUri}/${this.usersUri}/${this.registerUri}`, user).subscribe();
+    let errorData : any;
+    this.httpClient.post<User>(`${this.baseUri}/${this.usersUri}/${this.registerUri}`, user).subscribe(() => {}, error => {
+      errorData = error.error;
+    });
+
+    errorData = setTimeout(() => errorData, 5000);
+    return errorData;
   }
 
   login(user : User)
