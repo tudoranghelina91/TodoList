@@ -26,20 +26,8 @@ export class LoginServiceService {
   {
     this.httpClient.post<User>(`${this.baseUri}/${this.usersUri}/${this.loginUri}`, user)
     .subscribe(data => {
-      
-      if (data != null) {
-        user.id = data.id;
-        user.accessToken = data.accessToken;
-        user.expiresIn = data.expiresIn;
-        user.username = data.username;
-        user.email = data.email;
-        
-        if (user.accessToken != null) {
-          localStorage.setItem("accessToken", user.accessToken);
-
-          this.router.navigateByUrl('./lists');
-        }
-      }
+      localStorage.setItem("accessToken", data.accessToken);
+      this.router.navigateByUrl('./lists');
     });
   }
 
@@ -47,9 +35,7 @@ export class LoginServiceService {
   {
     let user : User = new User();
     this.httpClient.get<User>(`${this.baseUri}/${this.usersUri}/${this.detailsUri}`)
-      .subscribe(data => {
-        user.email = data.email;
-    });
+      .subscribe(data => user.email = data.email);
     
     return user;
   }
