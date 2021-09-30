@@ -23,16 +23,16 @@ namespace DoStuff.API.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<User>> Login(User user)
         {
-            if (user.Email == null || user.HashedPassword == null)
-            {
-                return BadRequest();
-            }
-
             User u = await GetUserByAccessToken();
 
             if (u != null)
             {
                 return u;
+            }
+
+            if (user.Email == null || user.HashedPassword == null)
+            {
+                return BadRequest();
             }
 
             u = await this._context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
