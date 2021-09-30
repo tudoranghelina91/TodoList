@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../interfaces/IUser';
 import { LoginServiceService } from '../services/login-service.service';
@@ -13,11 +13,12 @@ import { LoginServiceService } from '../services/login-service.service';
 export class LoginComponent implements OnInit {
 
   private loginService : LoginServiceService;
+  private user : User = new User();
 
   constructor(httpClient : HttpClient, private router : Router, private route : ActivatedRoute) { 
     this.loginFormGroup = new FormGroup ({
-      email : new FormControl(),
-      password : new FormControl()
+      email : new FormControl(this.user.email, [Validators.required, Validators.email, Validators.minLength(6), Validators.maxLength(50)]),
+      password : new FormControl(this.user.hashedPassword, [Validators.required, Validators.minLength(4), Validators.maxLength(16)])
     });
 
     this.loginService = new LoginServiceService(httpClient, router);
@@ -26,18 +27,18 @@ export class LoginComponent implements OnInit {
   public loginFormGroup : FormGroup;
 
   ngOnInit(): void {
-    let user : User = new User();
-
-    user.accessToken = localStorage.getItem('accessToken');
-    this.loginService.login(user);
+    this.user.accessToken = localStorage.getItem('accessToken');
+    this.loginService.login(this.user);
   }
+
+  get email() { return this.loginFormGroup.get('email') }
+  get password() { return this.loginFormGroup.get('password') }
 
   login()
   {
-    let user : User = new User();
-    user.email = this.loginFormGroup.get('email').value;
-    user.hashedPassword = this.loginFormGroup.get('password').value;
+    this.user.email = this.email.value;
+    this.user.hashedPassword = this.password.value;
 
-    this.loginService.login(user);
+    this.loginService.login(this.user);
   }
 }

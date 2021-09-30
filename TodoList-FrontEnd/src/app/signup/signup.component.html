@@ -23,5 +23,12 @@
         <div>
             <a href="login">Sign in</a>
         </div>
+        <mat-error *ngIf="email.errors?.email">Email invalid format</mat-error>
+        <mat-error *ngIf="email.errors?.minlength">Email too short</mat-error>
+        <mat-error *ngIf="email.errors?.maxlength">Email too long</mat-error>
+        <mat-error *ngIf="email.errors?.required">Email required</mat-error>
+        <mat-error *ngIf="password.errors?.minlength">Password too short</mat-error>
+        <mat-error *ngIf="password.errors?.maxlength">Password too long</mat-error>
+        <mat-error *ngIf="password.errors?.required">Password required</mat-error>
     </mat-card>
 </div>
