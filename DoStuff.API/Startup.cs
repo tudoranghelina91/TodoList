@@ -33,7 +33,7 @@ namespace DoStuff.API
                     builder =>
                     {
                         IConfiguration clientUrls = Configuration.GetSection("ClientUrls");
-                        builder.WithOrigins(clientUrls["dev"], clientUrls["prod"]);
+                        builder.WithOrigins(clientUrls["prod"]);
                         builder.WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, HeaderNames.AccessControlAllowOrigin);
                         builder.AllowAnyMethod();
                     });
