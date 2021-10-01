@@ -32,8 +32,7 @@ namespace DoStuff.API
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        IConfiguration clientUrls = Configuration.GetSection("ClientUrls");
-                        builder.WithOrigins(clientUrls["prod"]);
+                        builder.WithOrigins(Configuration.GetValue<string>("ClientUrl"));
                         builder.WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, HeaderNames.AccessControlAllowOrigin);
                         builder.AllowAnyMethod();
                     });
