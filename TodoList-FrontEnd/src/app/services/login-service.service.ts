@@ -10,7 +10,7 @@ export class LoginServiceService {
 
   constructor(private httpClient : HttpClient, private router : Router) { }
   
-  baseUri = "https://apidostuff.azurewebsites.net";
+  baseUri = "https://apidostuff.azurewebsites.net/api";
   usersUri = "users";
   registerUri = "register";
   loginUri = "login";
