@@ -15,6 +15,8 @@ export class LoginComponent implements OnInit {
   private loginService : LoginServiceService;
   private user : User = new User();
 
+  showLoginError: boolean;
+
   constructor(httpClient : HttpClient, private router : Router, private route : ActivatedRoute) { 
     this.loginFormGroup = new FormGroup ({
       email : new FormControl(this.user.email, [Validators.required, Validators.email, Validators.minLength(6), Validators.maxLength(50)]),
@@ -38,7 +40,7 @@ export class LoginComponent implements OnInit {
   {
     this.user.email = this.email.value;
     this.user.hashedPassword = this.password.value;
-
     this.loginService.login(this.user);
+    this.showLoginError = true;
   }
 }
