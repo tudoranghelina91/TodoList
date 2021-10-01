@@ -1,0 +1,21 @@
+.menu {
+    width: 100%;
+    margin: 0px 240px 0px 240px;
+}
+
+.left {
+    display: inline-block;
+    text-align: left;
+    width: 80%;
+}
+
+.right {
+    display: inline-block;
+    text-align: right;
+    width: 20%;
+}
+
+.inline-block {
+    display: inline-block;
+    margin-right: 20px;
+}

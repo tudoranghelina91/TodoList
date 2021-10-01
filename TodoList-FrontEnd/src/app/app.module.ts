@@ -14,12 +14,17 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TodoListItemComponent } from './todo-list-item/todo-list-item.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { TodoListsComponent } from './todo-lists/todo-lists.component';
+import { LoginComponent } from './login/login.component';
+import { LoginInterceptor } from './interceptors/login.interceptor';
+import { SignupComponent } from './signup/signup.component';
+import { LogoutComponent } from './logout/logout.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +32,11 @@ import { TodoListsComponent } from './todo-lists/todo-lists.component';
     TodoListComponent,
     TodoListItemComponent,
     ConfirmationDialogComponent,
-    TodoListsComponent
+    TodoListsComponent,
+    LoginComponent,
+    SignupComponent,
+    LogoutComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -47,7 +56,13 @@ import { TodoListsComponent } from './todo-lists/todo-lists.component';
     MatIconModule,
     MatPaginatorModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoginInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

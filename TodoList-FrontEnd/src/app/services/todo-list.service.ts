@@ -11,7 +11,7 @@ export class TodoListService {
 
   constructor(private httpClient : HttpClient) { }
 
-  baseUri = "https://apidostuff.azurewebsites.net/api";
+  baseUri = "https://localhost:5001/api";
   listUri = "todolists";
   itemsUri = "todolistitems"
 

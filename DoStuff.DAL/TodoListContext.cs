@@ -1,7 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using DoStuff.Models;
 
 namespace DoStuff.DAL
@@ -18,5 +15,6 @@ namespace DoStuff.DAL
         }
         public DbSet<TodoList> TodoLists { get; set; }
         public DbSet<TodoListItem> TodoListItems { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

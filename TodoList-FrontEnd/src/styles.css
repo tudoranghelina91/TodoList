@@ -36,3 +36,47 @@ button {
 p, .mat-card-subtitle {
     text-align: justify;
 }
+
+.center-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 70vh;
+}
+
+mat-card.register-login {
+    padding: 50px;
+}
+
+app-header {
+    position: fixed;
+    top:0;
+    left: 0;
+    align-items: flex-end;
+    padding: 20px;
+    background-color: white;
+    margin: 0px;
+    margin-bottom: 20px;
+    display: flex;
+    width: 100vw;
+    z-index: 1;
+    box-shadow: 5px 2px 10px gainsboro;
+}
+
+#content {
+    position: absolute;
+    top: 100px;
+    width: 100vw;
+}
+
+h1.app-title {
+    font-family: 'Dancing Script', cursive;
+    color: palevioletred;
+    font-size: 64px;
+}
+
+.small-title {
+    font-size: 36px !important;
+}

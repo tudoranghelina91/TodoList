@@ -1,0 +1,11 @@
+<div class="menu">
+    <div class="left">
+        <!-- <h1 class="app-title small-title inline-block">Do Stuff!!!</h1> -->
+        <a mat-button [routerLink]="['/lists']" class="inline-block">Lists</a>
+    </div>
+    <div class="right">
+        <h3 class="inline-block">{{user.email}}</h3>
+        <a mat-button [routerLink]="['/logout']" class="inline-block">Logout</a>
+    </div>
+</div>
+

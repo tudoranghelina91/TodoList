@@ -4,6 +4,8 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TodoList } from '../interfaces/ITodoList';
 import { TodoListItem } from '../interfaces/ITodoListItem';
+import { User } from '../interfaces/IUser';
+import { LoginServiceService } from '../services/login-service.service';
 import { TodoListService } from '../services/todo-list.service';
 
 @Component({
@@ -14,6 +16,7 @@ import { TodoListService } from '../services/todo-list.service';
 export class TodoListsComponent implements OnInit {
 
   constructor(httpClient : HttpClient, private _snackBar : MatSnackBar) {
+    this.loginService = new LoginServiceService(httpClient, null);
     this.todoListService = new TodoListService(httpClient);
     this.pageEvent = new PageEvent();
    }
@@ -29,9 +32,11 @@ export class TodoListsComponent implements OnInit {
 
   todoLists : TodoList[];
   todoListService : TodoListService;
+  loginService : LoginServiceService;
   lastUpdatedTodoListItem : TodoListItem;
   notLoaded : Boolean = true;
   success : Boolean;
+  user : User;
 
   pageEvent: PageEvent;
   pageSizeOptions: number[] = [5, 10, 25, 50, 100];
@@ -39,6 +44,7 @@ export class TodoListsComponent implements OnInit {
   getServerData(event?:PageEvent) {
     this.notLoaded = true;
     this.success = false;
+    this.user = this.loginService.getUserDetails();
     this.todoListService.getTodoLists(event.pageIndex + 1, event.pageSize)
     .subscribe(data => 
       {

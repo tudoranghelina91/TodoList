@@ -1,17 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DoStuff.DAL;
 
 namespace DoStuff.API
@@ -28,8 +21,12 @@ namespace DoStuff.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IAuthService, AuthService>();
             services.AddDbContext<TodoListContext>(options => options.UseSqlite(Configuration.GetConnectionString("prod")));
-            services.AddControllers();
+            services.AddControllers()
+                .AddNewtonsoftJson(o => {
+                    o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
@@ -37,7 +34,7 @@ namespace DoStuff.API
                     {
                         IConfiguration clientUrls = Configuration.GetSection("ClientUrls");
                         builder.WithOrigins(clientUrls["dev"], clientUrls["prod"]);
-                        builder.WithHeaders(HeaderNames.ContentType);
+                        builder.WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, HeaderNames.AccessControlAllowOrigin);
                         builder.AllowAnyMethod();
                     });
             });
@@ -59,11 +56,7 @@ namespace DoStuff.API
 
             app.UseCors();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }
