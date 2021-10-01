@@ -56,11 +56,7 @@ namespace DoStuff.API
 
             app.UseCors();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }
