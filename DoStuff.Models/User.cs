@@ -8,8 +8,6 @@ namespace DoStuff.Models
         public string Email { get; set; }
         public string HashedPassword { get; set; }
         public byte[] Salt { get; set; }
-        public string AccessToken { get; set; }
-        public long ExpiresIn { get; set; }
 
         public IEnumerable<TodoList> TodoLists { get; set; }
 

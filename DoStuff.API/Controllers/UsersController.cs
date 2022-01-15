@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace DoStuff.API.Controllers
 {
@@ -21,21 +23,10 @@ namespace DoStuff.API.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<User>> Login(User user)
+        public async Task<ActionResult<JwtSecurityToken>> Login(User user)
         {
-            User u = await GetUserByAccessToken();
 
-            if (u != null)
-            {
-                return u;
-            }
-
-            if (user.Email == null || user.HashedPassword == null)
-            {
-                return BadRequest();
-            }
-
-            u = await this._context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
+            var u = await this._context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
 
             if (u == null)
             {
@@ -51,20 +42,21 @@ namespace DoStuff.API.Controllers
 
             if (u.HashedPassword == hashedPassword)
             {
-                u.AccessToken = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
-                u.ExpiresIn = new DateTimeOffset(DateTime.UtcNow.AddMonths(1)).ToUnixTimeMilliseconds();
+                var token = new JwtSecurityToken(
+                    null,
+                    null,
+                    new[]
+                    {
+                        new Claim(JwtRegisteredClaimNames.Sub, Convert.ToString(u.Id)),
+                        new Claim(JwtRegisteredClaimNames.Email, u.Email)
+                    },
+                    expires: DateTime.UtcNow.AddMonths(1));
 
                 await this._context.SaveChangesAsync();
-                return u;
+                return token;
             }
 
             return Unauthorized();
-        }
-
-        private async Task<User> GetUserByAccessToken()
-        {
-            var utcNowTimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
-            return await this._context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString() && u.ExpiresIn > utcNowTimestamp);
         }
 
         [HttpPost("Register")]
@@ -99,12 +91,6 @@ namespace DoStuff.API.Controllers
             }
 
             return BadRequest();
-        }
-
-        [HttpGet("Details")]
-        public async Task<ActionResult<User>> GetUserDetails()
-        {
-            return await GetUserByAccessToken();
         }
     }
 }
