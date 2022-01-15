@@ -27,7 +27,6 @@ namespace DoStuff.API
             services.AddControllers()
                 .AddNewtonsoftJson(o => {
                     o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-                    o.SerializerSettings.MaxDepth = 1;
                 });
             services.AddCors(options =>
             {
