@@ -3,7 +3,6 @@ using DoStuff.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
@@ -17,13 +16,15 @@ namespace DoStuff.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly TodoListContext _context;
-        public UsersController(TodoListContext context)
+        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
+        public UsersController(TodoListContext context, JwtSecurityTokenHandler jwtSecurityTokenHandler)
         {
             _context = context;
+            _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<JwtSecurityToken>> Login(User user)
+        public async Task<ActionResult<string>> Login(User user)
         {
 
             var u = await this._context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
@@ -53,7 +54,7 @@ namespace DoStuff.API.Controllers
                     expires: DateTime.UtcNow.AddMonths(1));
 
                 await this._context.SaveChangesAsync();
-                return token;
+                return _jwtSecurityTokenHandler.WriteToken(token);
             }
 
             return Unauthorized();

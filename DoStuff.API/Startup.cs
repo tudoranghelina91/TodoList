@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using DoStuff.DAL;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace DoStuff.API
 {
@@ -21,11 +22,12 @@ namespace DoStuff.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IAuthService, AuthService>();
+            services.AddTransient<JwtSecurityTokenHandler>();
             services.AddDbContext<TodoListContext>(options => options.UseSqlite(Configuration.GetConnectionString("prod")));
             services.AddControllers()
                 .AddNewtonsoftJson(o => {
                     o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                    o.SerializerSettings.MaxDepth = 1;
                 });
             services.AddCors(options =>
             {

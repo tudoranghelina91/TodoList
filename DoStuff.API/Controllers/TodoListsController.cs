@@ -25,7 +25,7 @@ namespace DoStuff.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoList>>> Get()
         {
-            var token = Request.Headers["Authorization"];
+            var token = Convert.ToString(Request.Headers["Authorization"]).Replace("Bearer", string.Empty).TrimStart();
             var jwtSecurityToken = _jwtSecurityTokenHandler.ReadJwtToken(token);
             var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == Convert.ToInt32(jwtSecurityToken.Subject));
 
@@ -42,7 +42,7 @@ namespace DoStuff.API.Controllers
         [HttpGet("{page}/{count}")]
         public async Task<ActionResult<IEnumerable<TodoList>>> Get(int page, int count)
         {
-            var token = Request.Headers["Authorization"];
+            var token = Convert.ToString(Request.Headers["Authorization"]).Replace("Bearer", string.Empty).TrimStart();
             var jwtSecurityToken = _jwtSecurityTokenHandler.ReadJwtToken(token);
             var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == Convert.ToInt32(jwtSecurityToken.Subject));
 
@@ -61,7 +61,7 @@ namespace DoStuff.API.Controllers
         [HttpGet("GetItemsCount")]
         public async Task<ActionResult<int>> GetItemsCount()
         {
-            var token = Request.Headers["Authorization"];
+            var token = Convert.ToString(Request.Headers["Authorization"]).Replace("Bearer", string.Empty).TrimStart();
             var jwtSecurityToken = _jwtSecurityTokenHandler.ReadJwtToken(token);
             var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == Convert.ToInt32(jwtSecurityToken.Subject));
 
@@ -78,7 +78,7 @@ namespace DoStuff.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoList>> Get(int id)
         {
-            var token = Request.Headers["Authorization"];
+            var token = Convert.ToString(Request.Headers["Authorization"]).Replace("Bearer", string.Empty).TrimStart();
             var jwtSecurityToken = _jwtSecurityTokenHandler.ReadJwtToken(token);
             var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == Convert.ToInt32(jwtSecurityToken.Subject));
 
@@ -95,7 +95,7 @@ namespace DoStuff.API.Controllers
         {
             try
             {
-                var token = Request.Headers["Authorization"];
+                var token = Convert.ToString(Request.Headers["Authorization"]).Replace("Bearer", string.Empty).TrimStart();
                 var jwtSecurityToken = _jwtSecurityTokenHandler.ReadJwtToken(token);
                 var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == Convert.ToInt32(jwtSecurityToken.Subject));
 
@@ -121,7 +121,7 @@ namespace DoStuff.API.Controllers
         {
             try
             {
-                var token = Request.Headers["Authorization"];
+                var token = Convert.ToString(Request.Headers["Authorization"]).Replace("Bearer", string.Empty).TrimStart();
                 var jwtSecurityToken = _jwtSecurityTokenHandler.ReadJwtToken(token);
                 var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == Convert.ToInt32(jwtSecurityToken.Subject));
 
@@ -154,7 +154,7 @@ namespace DoStuff.API.Controllers
         {
             try
             {
-                var token = Request.Headers["Authorization"];
+                var token = Convert.ToString(Request.Headers["Authorization"]).Replace("Bearer", string.Empty).TrimStart();
                 var jwtSecurityToken = _jwtSecurityTokenHandler.ReadJwtToken(token);
                 var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == Convert.ToInt32(jwtSecurityToken.Subject));
 

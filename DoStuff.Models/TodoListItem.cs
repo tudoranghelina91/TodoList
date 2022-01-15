@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Newtonsoft.Json;
 
 namespace DoStuff.Models
 {
@@ -11,6 +9,8 @@ namespace DoStuff.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public bool Completed { get; set; }
+        
+        [JsonIgnore]
         public TodoList TodoList { get; set; }
     }
 }

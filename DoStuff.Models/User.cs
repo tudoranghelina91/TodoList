@@ -6,7 +6,9 @@ namespace DoStuff.Models
     {
         public long Id { get; set; }
         public string Email { get; set; }
+        
         public string HashedPassword { get; set; }
+
         public byte[] Salt { get; set; }
 
         public IEnumerable<TodoList> TodoLists { get; set; }
