@@ -87,7 +87,9 @@ namespace DoStuff.API.Controllers
                 return Unauthorized();
             }
 
-            return await _context.TodoLists.FirstOrDefaultAsync(td => td.Id == id);
+            return await _context.TodoLists
+                .Include(t => t.TodoListItems)
+                .SingleOrDefaultAsync(td => td.Id == id);
         }
 
         [HttpPost]
@@ -130,7 +132,7 @@ namespace DoStuff.API.Controllers
                     return Unauthorized();
                 }
 
-                TodoList td = await _context.TodoLists.FirstOrDefaultAsync(td => td.Id == todoList.Id);
+                TodoList td = await _context.TodoLists.Include(td => td.TodoListItems).FirstOrDefaultAsync(td => td.Id == todoList.Id);
                 
                 if (td != null)
                 {
