@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,67 +15,81 @@ namespace DoStuff.API.Controllers
     public class TodoListsController : ControllerBase
     {
         private readonly TodoListContext _context;
-        private readonly IAuthService _authService;
-        public TodoListsController(TodoListContext context, IAuthService authService)
+        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
+        public TodoListsController(TodoListContext context, JwtSecurityTokenHandler jwtSecurityTokenHandler)
         {
             _context = context;
-            _authService = authService;
+            _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoList>>> Get()
         {
-            var u = await _context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString());
-            if (_authService.IsAuthorized(u))
+            var token = Convert.ToString(Request.Headers["Authorization"]).Replace("Bearer", string.Empty).TrimStart();
+            var jwtSecurityToken = _jwtSecurityTokenHandler.ReadJwtToken(token);
+            var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == Convert.ToInt32(jwtSecurityToken.Subject));
+
+            if (u == null)
             {
-                return await _context.TodoLists
+                return Unauthorized();
+            }
+
+            return await _context.TodoLists
                     .Where(t => t.User == u)
                     .ToListAsync();
-            }
-            return Unauthorized();
         }
 
         [HttpGet("{page}/{count}")]
         public async Task<ActionResult<IEnumerable<TodoList>>> Get(int page, int count)
         {
-            var u = await _context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString());
+            var token = Convert.ToString(Request.Headers["Authorization"]).Replace("Bearer", string.Empty).TrimStart();
+            var jwtSecurityToken = _jwtSecurityTokenHandler.ReadJwtToken(token);
+            var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == Convert.ToInt32(jwtSecurityToken.Subject));
 
-            if (_authService.IsAuthorized(u))
+            if (u == null)
             {
-                return await _context.TodoLists
-                    .Where(t => t.User == u)
-                    .OrderByDescending(td => td.Id)
-                    .Skip((page - 1) * count)
-                    .Take(count).ToListAsync();
+                return Unauthorized();
             }
 
-            return Unauthorized();
+            return await _context.TodoLists
+                .Where(t => t.User == u)
+                .OrderByDescending(td => td.Id)
+                .Skip((page - 1) * count)
+                .Take(count).ToListAsync();
         }
 
         [HttpGet("GetItemsCount")]
         public async Task<ActionResult<int>> GetItemsCount()
         {
-            var u = await _context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString());
-            if (_authService.IsAuthorized(u))
+            var token = Convert.ToString(Request.Headers["Authorization"]).Replace("Bearer", string.Empty).TrimStart();
+            var jwtSecurityToken = _jwtSecurityTokenHandler.ReadJwtToken(token);
+            var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == Convert.ToInt32(jwtSecurityToken.Subject));
+
+            if (u == null)
             {
-                return await _context.TodoLists
-                    .Where(t => t.User == u)
-                    .CountAsync();
+                return Unauthorized();
             }
 
-            return Unauthorized();
+            return await _context.TodoLists
+                    .Where(t => t.User == u)
+                    .CountAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoList>> Get(int id)
         {
-            var u = await _context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString());
-            if (_authService.IsAuthorized(u))
+            var token = Convert.ToString(Request.Headers["Authorization"]).Replace("Bearer", string.Empty).TrimStart();
+            var jwtSecurityToken = _jwtSecurityTokenHandler.ReadJwtToken(token);
+            var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == Convert.ToInt32(jwtSecurityToken.Subject));
+
+            if (u == null)
             {
-                return await _context.TodoLists.FirstOrDefaultAsync(td => td.Id == id);
+                return Unauthorized();
             }
 
-            return Unauthorized();
+            return await _context.TodoLists
+                .Include(t => t.TodoListItems)
+                .SingleOrDefaultAsync(td => td.Id == id);
         }
 
         [HttpPost]
@@ -82,18 +97,20 @@ namespace DoStuff.API.Controllers
         {
             try
             {
-                var u = await _context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString());
-                if (_authService.IsAuthorized(u))
+                var token = Convert.ToString(Request.Headers["Authorization"]).Replace("Bearer", string.Empty).TrimStart();
+                var jwtSecurityToken = _jwtSecurityTokenHandler.ReadJwtToken(token);
+                var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == Convert.ToInt32(jwtSecurityToken.Subject));
+
+                if (u == null)
                 {
-                    var t = await _context.TodoLists.AddAsync(todoList);
+                    return Unauthorized();
+                }
+
+                var t = await _context.TodoLists.AddAsync(todoList);
                     t.Entity.UserId = u.Id;
                     t.Entity.User = u;
                     await _context.SaveChangesAsync();
                     return t.Entity;
-                }
-
-                return Unauthorized();
-
             }
             catch
             {
@@ -106,21 +123,26 @@ namespace DoStuff.API.Controllers
         {
             try
             {
-                var u = await _context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString());
-                if (_authService.IsAuthorized(u))
+                var token = Convert.ToString(Request.Headers["Authorization"]).Replace("Bearer", string.Empty).TrimStart();
+                var jwtSecurityToken = _jwtSecurityTokenHandler.ReadJwtToken(token);
+                var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == Convert.ToInt32(jwtSecurityToken.Subject));
+
+                if (u == null)
                 {
-                    TodoList td = await _context.TodoLists.FirstOrDefaultAsync(td => td.Id == todoList.Id);
-                    if (td != null)
-                    {
-                        td.Name = todoList.Name;
-                        td.Description = todoList.Description;
-                        await _context.SaveChangesAsync();
-                        return td;
-                    }
-                    return NotFound();
+                    return Unauthorized();
                 }
 
-                return Unauthorized();
+                TodoList td = await _context.TodoLists.Include(td => td.TodoListItems).FirstOrDefaultAsync(td => td.Id == todoList.Id);
+                
+                if (td != null)
+                {
+                    td.Name = todoList.Name;
+                    td.Description = todoList.Description;
+                    await _context.SaveChangesAsync();
+                    return td;
+                }
+
+                return NotFound();
 
             }
             catch
@@ -134,21 +156,24 @@ namespace DoStuff.API.Controllers
         {
             try
             {
-                var u = await _context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString());
-                if (_authService.IsAuthorized(u))
-                {
-                    TodoList td = await _context.TodoLists.FirstOrDefaultAsync(td => td.Id == id);
-                    if (td != null)
-                    {
-                        var t = _context.Remove(td);
-                        await _context.SaveChangesAsync();
-                        return t.Entity;
-                    }
+                var token = Convert.ToString(Request.Headers["Authorization"]).Replace("Bearer", string.Empty).TrimStart();
+                var jwtSecurityToken = _jwtSecurityTokenHandler.ReadJwtToken(token);
+                var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == Convert.ToInt32(jwtSecurityToken.Subject));
 
-                    return null;
+                if (u == null)
+                {
+                    return Unauthorized();
                 }
 
-                return Unauthorized();
+                TodoList td = await _context.TodoLists.FirstOrDefaultAsync(td => td.Id == id);
+                if (td != null)
+                {
+                    var t = _context.Remove(td);
+                    await _context.SaveChangesAsync();
+                    return t.Entity;
+                }
+
+                return NotFound();
 
             }
             catch

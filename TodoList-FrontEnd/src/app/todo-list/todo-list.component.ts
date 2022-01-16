@@ -123,7 +123,6 @@ export class TodoListComponent implements OnInit {
     let todoList = new TodoList()
 
     todoList.id = this.todoList.id;
-    console.log(this.todoListFormGroup);
     if (this.todoListFormGroup.get('name').value != null)
     {
       todoList.name = String(this.todoListFormGroup.get('name').value).trim();

@@ -30,7 +30,6 @@ export class SignupComponent implements OnInit {
 
   ngOnInit(): void {
     let user : User = new User();
-    user.accessToken = localStorage.getItem('accessToken');
   }
 
   public registerFormGroup : FormGroup;

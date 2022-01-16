@@ -1,8 +1,9 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TodoList } from '../interfaces/ITodoList';
 
 import { TodoListItem } from '../interfaces/ITodoListItem';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class TodoListService {
 
   constructor(private httpClient : HttpClient) { }
 
-  baseUri = "https://apidostuff.azurewebsites.net/api";
+  baseUri = environment.baseUri;
   listUri = "todolists";
   itemsUri = "todolistitems"
 

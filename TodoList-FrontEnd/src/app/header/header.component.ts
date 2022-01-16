@@ -12,6 +12,6 @@ export class HeaderComponent implements OnInit {
   user : User;
   constructor(private loginService : LoginServiceService) { }
   ngOnInit(): void {
-    this.user = this.loginService.getUserDetails();
+    this.user = this.loginService.getUserDetails(localStorage.getItem('accessToken'));
   }
 }

@@ -44,7 +44,7 @@ export class TodoListsComponent implements OnInit {
   getServerData(event?:PageEvent) {
     this.notLoaded = true;
     this.success = false;
-    this.user = this.loginService.getUserDetails();
+    this.user = this.loginService.getUserDetails(localStorage.getItem('accessToken'));
     this.todoListService.getTodoLists(event.pageIndex + 1, event.pageSize)
     .subscribe(data => 
       {

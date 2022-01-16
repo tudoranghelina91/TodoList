@@ -3,10 +3,13 @@ using DoStuff.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
+using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace DoStuff.API.Controllers
 {
@@ -15,27 +18,20 @@ namespace DoStuff.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly TodoListContext _context;
-        public UsersController(TodoListContext context)
+        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
+        public UsersController(TodoListContext context, JwtSecurityTokenHandler jwtSecurityTokenHandler)
         {
             _context = context;
+            _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult<User>> Login(User user)
+        public async Task<ActionResult<string>> Login(User user)
         {
-            User u = await GetUserByAccessToken();
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisismySecretKey"));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            if (u != null)
-            {
-                return u;
-            }
-
-            if (user.Email == null || user.HashedPassword == null)
-            {
-                return BadRequest();
-            }
-
-            u = await this._context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
+            var u = await this._context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
 
             if (u == null)
             {
@@ -51,20 +47,21 @@ namespace DoStuff.API.Controllers
 
             if (u.HashedPassword == hashedPassword)
             {
-                u.AccessToken = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
-                u.ExpiresIn = new DateTimeOffset(DateTime.UtcNow.AddMonths(1)).ToUnixTimeMilliseconds();
+                var token = new JwtSecurityToken(
+                    "Test",
+                    "Test",
+                    new[]
+                    {
+                        new Claim(JwtRegisteredClaimNames.Sub, Convert.ToString(u.Id)),
+                        new Claim(JwtRegisteredClaimNames.Email, u.Email)
+                    },
+                    expires: DateTime.UtcNow.AddMonths(1), signingCredentials: credentials);
 
                 await this._context.SaveChangesAsync();
-                return u;
+                return _jwtSecurityTokenHandler.WriteToken(token);
             }
 
             return Unauthorized();
-        }
-
-        private async Task<User> GetUserByAccessToken()
-        {
-            var utcNowTimestamp = new DateTimeOffset(DateTime.UtcNow).ToUnixTimeMilliseconds();
-            return await this._context.Users.FirstOrDefaultAsync(u => u.AccessToken == Request.Headers["Authorization"].ToString() && u.ExpiresIn > utcNowTimestamp);
         }
 
         [HttpPost("Register")]
@@ -99,12 +96,6 @@ namespace DoStuff.API.Controllers
             }
 
             return BadRequest();
-        }
-
-        [HttpGet("Details")]
-        public async Task<ActionResult<User>> GetUserDetails()
-        {
-            return await GetUserByAccessToken();
         }
     }
 }
