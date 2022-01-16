@@ -3,7 +3,6 @@ using DoStuff.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace DoStuff.API.Controllers
 {
@@ -12,11 +11,9 @@ namespace DoStuff.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly TodoListContext _context;
-        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler;
-        public UsersController(TodoListContext context, JwtSecurityTokenHandler jwtSecurityTokenHandler)
+        public UsersController(TodoListContext context)
         {
             _context = context;
-            _jwtSecurityTokenHandler = jwtSecurityTokenHandler;
         }
 
         [HttpPost("Login")]
