@@ -30,7 +30,7 @@ namespace DoStuff.API.Controllers
 
             if (u.HashedPassword == hashedPassword)
             {
-                return TokenUtil.GenerateToken(user);
+                return TokenUtil.GenerateToken(u);
             }
 
             return Unauthorized();
