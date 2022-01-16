@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
   public loginFormGroup : FormGroup;
 
   ngOnInit(): void {
-    this.loginService.login(this.user);
+    this.router.navigateByUrl('lists');
   }
 
   get email() { return this.loginFormGroup.get('email') }
