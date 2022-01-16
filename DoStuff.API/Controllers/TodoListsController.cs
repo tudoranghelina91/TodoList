@@ -14,7 +14,7 @@ namespace DoStuff.API.Controllers
     public class TodoListsController : ControllerBase
     {
         private readonly TodoListContext _context;
-        public TodoListsController(TodoListContext context, JwtSecurityTokenHandler jwtSecurityTokenHandler)
+        public TodoListsController(TodoListContext context)
         {
             _context = context;
         }
