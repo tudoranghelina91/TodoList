@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import jwtDecode from 'jwt-decode';
 import { User } from '../interfaces/IUser';
-import * as settings from '../../appsettings.json';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class LoginServiceService {
 
   constructor(private httpClient : HttpClient, private router : Router) { }
   
-  baseUri = settings.baseUri;
+  baseUri = environment.baseUri;
   usersUri = "users";
   registerUri = "register";
   loginUri = "login";
