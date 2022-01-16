@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { TodoList } from '../interfaces/ITodoList';
 
 import { TodoListItem } from '../interfaces/ITodoListItem';
+import * as settings from '../../appsettings.json';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class TodoListService {
 
   constructor(private httpClient : HttpClient) { }
 
-  baseUri = "https://apidostuff.azurewebsites.net/api";
+  baseUri = settings.baseUri;
   listUri = "todolists";
   itemsUri = "todolistitems"
 
