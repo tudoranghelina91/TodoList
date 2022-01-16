@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
   public loginFormGroup : FormGroup;
 
   ngOnInit(): void {
-    this.user.accessToken = localStorage.getItem('accessToken');
     this.loginService.login(this.user);
   }
 
