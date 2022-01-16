@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace DoStuff.API.Controllers
 {
@@ -26,6 +28,8 @@ namespace DoStuff.API.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<string>> Login(User user)
         {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisismySecretKey"));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var u = await this._context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
 
@@ -44,14 +48,14 @@ namespace DoStuff.API.Controllers
             if (u.HashedPassword == hashedPassword)
             {
                 var token = new JwtSecurityToken(
-                    null,
-                    null,
+                    "Test",
+                    "Test",
                     new[]
                     {
                         new Claim(JwtRegisteredClaimNames.Sub, Convert.ToString(u.Id)),
                         new Claim(JwtRegisteredClaimNames.Email, u.Email)
                     },
-                    expires: DateTime.UtcNow.AddMonths(1));
+                    expires: DateTime.UtcNow.AddMonths(1), signingCredentials: credentials);
 
                 await this._context.SaveChangesAsync();
                 return _jwtSecurityTokenHandler.WriteToken(token);
