@@ -3,13 +3,7 @@ using DoStuff.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using System;
-using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 namespace DoStuff.API.Controllers
 {
@@ -28,9 +22,6 @@ namespace DoStuff.API.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<string>> Login(User user)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisismySecretKey"));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
             var u = await this._context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
 
             if (u == null)
@@ -38,27 +29,11 @@ namespace DoStuff.API.Controllers
                 return NotFound();
             }
 
-            var hashedPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-            user.HashedPassword,
-            u.Salt,
-            KeyDerivationPrf.HMACSHA1,
-            10000,
-            256 / 8));
+            var hashedPassword = PasswordUtil.Decode(user.HashedPassword, u.Salt);
 
             if (u.HashedPassword == hashedPassword)
             {
-                var token = new JwtSecurityToken(
-                    "Test",
-                    "Test",
-                    new[]
-                    {
-                        new Claim(JwtRegisteredClaimNames.Sub, Convert.ToString(u.Id)),
-                        new Claim(JwtRegisteredClaimNames.Email, u.Email)
-                    },
-                    expires: DateTime.UtcNow.AddMonths(1), signingCredentials: credentials);
-
-                await this._context.SaveChangesAsync();
-                return _jwtSecurityTokenHandler.WriteToken(token);
+                return TokenUtil.GenerateToken(user);
             }
 
             return Unauthorized();
@@ -76,18 +51,10 @@ namespace DoStuff.API.Controllers
 
             if (u == null)
             {
-                user.Salt = new byte[128 / 8];
-                using (var rng = RandomNumberGenerator.Create())
-                {
-                    rng.GetBytes(user.Salt);
-                }
+                byte[] salt;
 
-                user.HashedPassword = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                    user.HashedPassword,
-                    user.Salt,
-                    KeyDerivationPrf.HMACSHA1,
-                    10000,
-                    256 / 8));
+                user.HashedPassword = PasswordUtil.Encode(user.HashedPassword, out salt);
+                user.Salt = salt;
 
                 await this._context.Users.AddAsync(user);
                 await this._context.SaveChangesAsync();
