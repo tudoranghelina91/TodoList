@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using DoStuff.DAL;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace DoStuff.API
 {
