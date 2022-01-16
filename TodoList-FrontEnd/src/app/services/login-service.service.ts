@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import jwtDecode from 'jwt-decode';
 import { User } from '../interfaces/IUser';
+import * as settings from '../../appsettings.json';
 
 @Injectable({
   providedIn: 'root'
@@ -10,13 +12,10 @@ export class LoginServiceService {
 
   constructor(private httpClient : HttpClient, private router : Router) { }
   
-  baseUri = "https://apidostuff.azurewebsites.net/api";
+  baseUri = settings.baseUri;
   usersUri = "users";
   registerUri = "register";
   loginUri = "login";
-  detailsUri = "details";
-  loginStatusUri = "loginStatus";
-  check = "loginStatus";
   
   register(user : User)
   {
@@ -27,19 +26,20 @@ export class LoginServiceService {
 
   login(user : User)
   {
-    this.httpClient.post<User>(`${this.baseUri}/${this.usersUri}/${this.loginUri}`, user)
+    this.httpClient.post(`${this.baseUri}/${this.usersUri}/${this.loginUri}`, user, { responseType: "text"})
     .subscribe(data => {
-      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("accessToken", data);
       this.router.navigateByUrl('./lists');
     });
   }
 
-  getUserDetails() : User
+  getUserDetails(token : string)
   {
-    let user : User = new User();
-    this.httpClient.get<User>(`${this.baseUri}/${this.usersUri}/${this.detailsUri}`)
-      .subscribe(data => user.email = data.email);
-    
+    let decodedToken : any = jwtDecode(token);
+    let user = new User();
+    user.id = decodedToken.sub;
+    user.email = decodedToken.email;
+
     return user;
   }
 
