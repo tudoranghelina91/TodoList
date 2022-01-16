@@ -2,7 +2,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace DoStuff.API.Controllers
+namespace DoStuff.API
 {
     public static class PasswordUtil
     {
