@@ -23,7 +23,7 @@ namespace DoStuff.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoListItem>>> Get()
         {
-            var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == TokenUtil.GetUserId(Request.Headers["Authorization"]));
+            var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"]));
 
             if (u == null)
             {
@@ -37,7 +37,7 @@ namespace DoStuff.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoListItem>> Get(int id)
         {
-            var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == TokenUtil.GetUserId(Request.Headers["Authorization"]));
+            var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"]));
 
             if (u == null)
             {
@@ -50,7 +50,7 @@ namespace DoStuff.API.Controllers
         [HttpGet("{list}/{page}/{count}")]
         public async Task<ActionResult<IEnumerable<TodoListItem>>> Get(int list, int page, int count)
         {
-            var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == TokenUtil.GetUserId(Request.Headers["Authorization"]));
+            var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"]));
 
             if (u == null)
             {
@@ -67,7 +67,7 @@ namespace DoStuff.API.Controllers
         [HttpGet("GetItemsCount/{list}")]
         public async Task<ActionResult<int>> GetItemsCount(int list)
         {
-            var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == TokenUtil.GetUserId(Request.Headers["Authorization"]));
+            var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"]));
 
             if (u == null)
             {
@@ -85,7 +85,7 @@ namespace DoStuff.API.Controllers
         {
             try
             {
-                var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == TokenUtil.GetUserId(Request.Headers["Authorization"]));
+                var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"]));
 
                 if (u == null)
                 {
@@ -108,7 +108,7 @@ namespace DoStuff.API.Controllers
         {
             try
             {
-                var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == TokenUtil.GetUserId(Request.Headers["Authorization"]));
+                var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"]));
 
                 if (u == null)
                 {
@@ -141,7 +141,7 @@ namespace DoStuff.API.Controllers
         {
             try
             {
-                var u = await _context.Users.FirstOrDefaultAsync(u => u.Id == TokenUtil.GetUserId(Request.Headers["Authorization"]));
+                var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"]));
 
                 if (u == null)
                 {
