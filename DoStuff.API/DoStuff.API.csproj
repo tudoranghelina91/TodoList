@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DoStuff.DAL\DoStuff.DAL.csproj" />
+    <ProjectReference Include="..\DoStuff.Services\DoStuff.Services.csproj" />
   </ItemGroup>
 
 
