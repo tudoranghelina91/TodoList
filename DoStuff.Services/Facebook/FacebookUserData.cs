@@ -1,4 +1,4 @@
-﻿namespace DoStuff.Services
+﻿namespace DoStuff.Services.Facebook
 {
     public class FacebookUserData
     {

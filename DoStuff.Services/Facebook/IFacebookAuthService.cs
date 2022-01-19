@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace DoStuff.Services
+namespace DoStuff.Services.Facebook
 {
     public interface IFacebookAuthService
     {

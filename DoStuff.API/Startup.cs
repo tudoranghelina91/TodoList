@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using DoStuff.DAL;
-using DoStuff.Services;
+using DoStuff.Services.Facebook;
 
 namespace DoStuff.API
 {
