@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using DoStuff.DAL;
+using DoStuff.Services;
 
 namespace DoStuff.API
 {
@@ -36,6 +37,7 @@ namespace DoStuff.API
                         builder.AllowAnyMethod();
                     });
             });
+            services.AddTransient<IFacebookAuthService, FacebookAuthService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
