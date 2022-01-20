@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Net.Http.Headers;
 using DoStuff.DAL;
 using DoStuff.Services.Facebook;
+using DoStuff.Services.Users;
+using System.Net.Http;
 
 namespace DoStuff.API
 {
@@ -37,6 +39,9 @@ namespace DoStuff.API
                         builder.AllowAnyMethod();
                     });
             });
+
+            services.AddHttpClient();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<IFacebookAuthService, FacebookAuthService>();
         }
 
