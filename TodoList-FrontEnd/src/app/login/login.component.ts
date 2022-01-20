@@ -29,10 +29,12 @@ export class LoginComponent implements OnInit {
   public loginFormGroup : FormGroup;
 
   ngOnInit(): void {
-    let code = this.route.queryParamMap.subscribe(s => s.get('code'))
-    if (code) {
-      
-    }
+    this.route.queryParamMap.subscribe(s => {
+      let code = s.get('code');
+      if (code) {
+        this.loginService.facebookLogin(code);
+      }
+    });
 
     if (localStorage.getItem('accessToken')) {
       this.router.navigateByUrl('lists');
