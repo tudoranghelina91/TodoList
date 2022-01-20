@@ -23,7 +23,7 @@
     },
     "DoStuff.API": {
       "commandName": "Project",
-      "workingDirectory": "C:\\Users\\tudor\\source\\repos\\TodoList\\DoStuff.API\\bin\\Debug\\net5.0",
+      "workingDirectory": "C:\\Users\\tudor\\source\\repos\\TodoList\\DoStuff.API\\bin\\Debug\\net6.0",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
