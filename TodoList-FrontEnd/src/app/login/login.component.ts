@@ -53,6 +53,6 @@ export class LoginComponent implements OnInit {
   }
 
   fbLogin() {
-    window.location.href = "https://www.facebook.com/v12.0/dialog/oauth?client_id=171596774608986&redirect_uri=https://localhost:4200/login"
+    window.location.href = "https://www.facebook.com/v12.0/dialog/oauth?client_id=171596774608986&redirect_uri=https://dostuffclient.azurewebsites.net/login"
   }
 }
