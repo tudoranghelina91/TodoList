@@ -1,7 +1,6 @@
-﻿using DoStuff.DAL;
-using DoStuff.Models;
+﻿using DoStuff.Models;
+using DoStuff.Services.Users;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace DoStuff.API.Controllers
@@ -10,16 +9,21 @@ namespace DoStuff.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly TodoListContext _context;
-        public UsersController(TodoListContext context)
+        private readonly IUserService _userService;
+        public UsersController(IUserService userService)
         {
-            _context = context;
+            _userService = userService;
         }
 
         [HttpPost("Login")]
         public async Task<ActionResult<string>> Login(User user)
         {
-            var u = await this._context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
+            if (user.Email == null || user.HashedPassword == null)
+            {
+                return BadRequest();
+            }
+
+            var u = await this._userService.GetUserByEmail(user.Email);
 
             if (u == null)
             {
@@ -44,7 +48,7 @@ namespace DoStuff.API.Controllers
                 return BadRequest();
             }
 
-            var u = await this._context.Users.FirstOrDefaultAsync(u => u.Email == user.Email);
+            var u = await this._userService.GetUserByEmail(user.Email);
 
             if (u == null)
             {
@@ -53,8 +57,7 @@ namespace DoStuff.API.Controllers
                 user.HashedPassword = PasswordUtil.Encode(user.HashedPassword, out salt);
                 user.Salt = salt;
 
-                await this._context.Users.AddAsync(user);
-                await this._context.SaveChangesAsync();
+                await this._userService.Insert(user);
 
                 return Ok();
             }

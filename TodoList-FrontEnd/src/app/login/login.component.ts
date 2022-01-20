@@ -29,7 +29,16 @@ export class LoginComponent implements OnInit {
   public loginFormGroup : FormGroup;
 
   ngOnInit(): void {
-    this.router.navigateByUrl('lists');
+    this.route.queryParamMap.subscribe(s => {
+      let code = s.get('code');
+      if (code) {
+        this.loginService.facebookLogin(code);
+      }
+    });
+
+    if (localStorage.getItem('accessToken')) {
+      this.router.navigateByUrl('lists');
+    }
   }
 
   get email() { return this.loginFormGroup.get('email') }
@@ -41,5 +50,9 @@ export class LoginComponent implements OnInit {
     this.user.hashedPassword = this.password.value;
     this.loginService.login(this.user);
     this.showLoginError = true;
+  }
+
+  fbLogin() {
+    window.location.href = "https://www.facebook.com/v12.0/dialog/oauth?client_id=171596774608986&redirect_uri=https://localhost:4200/login"
   }
 }

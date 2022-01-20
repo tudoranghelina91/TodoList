@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
@@ -9,11 +10,12 @@ namespace DoStuff.API
 {
     public static class TokenUtil
     {
-        public static int GetUserId(string t)
+        public static string GetUserEmail(string accessToken)
         {
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
-            var token = Convert.ToString(t).Replace("Bearer", string.Empty).TrimStart();
-            return Convert.ToInt32(jwtSecurityTokenHandler.ReadJwtToken(token).Subject);
+            var token = Convert.ToString(accessToken).Replace("Bearer", string.Empty).TrimStart();
+            var claims = jwtSecurityTokenHandler.ReadJwtToken(token).Claims;
+            return claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email).Value;
         }
 
         public static string GenerateToken(User user)

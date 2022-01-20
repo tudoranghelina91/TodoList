@@ -16,6 +16,7 @@ export class LoginServiceService {
   usersUri = "users";
   registerUri = "register";
   loginUri = "login";
+  facebookUri = "facebookAuth";
   
   register(user : User)
   {
@@ -33,8 +34,19 @@ export class LoginServiceService {
     });
   }
 
+  facebookLogin(code : string)
+  {
+    this.httpClient.get(`${this.baseUri}/${this.facebookUri}?code=${code}`, {responseType: 'text'})
+    .subscribe(data => {
+      localStorage.setItem("accessToken", data);
+      this.router.navigateByUrl('./lists');
+      
+    });
+  }
+
   getUserDetails(token : string)
   {
+    console.log(token);
     let decodedToken : any = jwtDecode(token);
     let user = new User();
     user.id = decodedToken.sub;
