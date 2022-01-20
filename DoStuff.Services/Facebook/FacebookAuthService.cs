@@ -20,7 +20,7 @@ namespace DoStuff.Services.Facebook
             return await response.Content.ReadAsStringAsync();
         }
 
-        public async Task<FacebookUserData> GetUserInfo(string accessToken)
+        public async Task<FacebookUserData> GetFacebookUserData(string accessToken)
         {
             var response = await _httpClient.GetAsync($"/me?access_token={accessToken}?fields=id,email,name");
             return JsonConvert.DeserializeObject<FacebookUserData>(await response.Content.ReadAsStringAsync());
