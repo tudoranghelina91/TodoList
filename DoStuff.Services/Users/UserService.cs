@@ -22,10 +22,11 @@ namespace DoStuff.Services.Users
             return await this._context.Users.SingleOrDefaultAsync(u => u.Email == email);
         }
 
-        public async Task Insert(User user)
+        public async Task<User> Insert(User user)
         {
             await this._context.Users.AddAsync(user);
             await this._context.SaveChangesAsync();
+            return await this._context.Users.SingleOrDefaultAsync(u => u.Email == user.Email);
         }
     }
 }

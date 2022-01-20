@@ -10,6 +10,6 @@ namespace DoStuff.Services.Users
     {
         Task<User> GetUserByEmail(string email);
 
-        Task Insert(User user);
+        Task<User> Insert(User user);
     }
 }
