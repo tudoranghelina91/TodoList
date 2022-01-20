@@ -20,6 +20,11 @@ namespace DoStuff.API.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<string>> Login(User user)
         {
+            if (user.Email == null || user.HashedPassword == null)
+            {
+                return BadRequest();
+            }
+
             var u = await this._userService.GetUserByEmail(user.Email);
 
             if (u == null)
