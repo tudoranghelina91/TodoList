@@ -4,7 +4,7 @@ namespace DoStuff.Services.Facebook
 {
     public interface IFacebookAuthService
     {
-        Task<string> GetAccessToken(string code);
-        Task<FacebookUserData> GetFacebookUserData(string accessToken);
+        Task<FacebookAccessToken> GetAccessToken(string code);
+        Task<FacebookUserData> GetFacebookUserData(FacebookAccessToken accessToken);
     }
 }

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace DoStuff.API.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class FacebookAuthController : Controller
     {
         private readonly IFacebookAuthService _facebookAuthService;
@@ -16,18 +18,21 @@ namespace DoStuff.API.Controllers
             _userService = userService;
         }
 
-        public async Task <ActionResult<string>> GetAccessToken(string code)
+        [HttpGet]
+        public async Task<ActionResult<string>> Login([FromQuery] string code)
         {
-            return await this._facebookAuthService.GetAccessToken(code);
-        }
+            if (code == null)
+            {
+                return BadRequest();
+            }
+            
+            FacebookAccessToken accessToken = await this._facebookAuthService.GetAccessToken(code);
+            
+            if (accessToken == null)
+            {
+                return BadRequest();
+            }
 
-        public async Task<ActionResult<FacebookUserData>> GetFacebookUserInfo(string accessToken)
-        {
-            return await this._facebookAuthService.GetFacebookUserData(accessToken);
-        }
-
-        public async Task<ActionResult<string>> Login(string accessToken)
-        {
             FacebookUserData data = await _facebookAuthService.GetFacebookUserData(accessToken);
 
             if (data == null)
@@ -36,9 +41,15 @@ namespace DoStuff.API.Controllers
             }
 
             var user = await _userService.GetUserByEmail(data.Email);
+
             if (user == null)
             {
-                return NotFound();
+                user = new User
+                {
+                    Email = data.Email
+                };
+
+                user = await this._userService.Insert(user);
             }
 
             return TokenUtil.GenerateToken(user);

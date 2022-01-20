@@ -14,15 +14,27 @@ namespace DoStuff.Services.Facebook
             _httpClient.BaseAddress = new Uri("https://graph.facebook.com");
         }
 
-        public async Task<string> GetAccessToken(string code)
+        public async Task<FacebookAccessToken> GetAccessToken(string code)
         {
-            var response = await _httpClient.GetAsync($"/v12.0/oauth/access_token?client_id=171596774608986&redirect_uri=https://localhost:4200/login&code={code}");
-            return await response.Content.ReadAsStringAsync();
+            var response = await _httpClient.GetAsync($"/v12.0/oauth/access_token?client_id=171596774608986&client_secret=a585ff6b41bfbbe6f222cbe581a69042&redirect_uri=https://localhost:4200/login&code={code}");
+            
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            return JsonConvert.DeserializeObject<FacebookAccessToken>(await response.Content.ReadAsStringAsync());
         }
 
-        public async Task<FacebookUserData> GetFacebookUserData(string accessToken)
+        public async Task<FacebookUserData> GetFacebookUserData(FacebookAccessToken accessToken)
         {
-            var response = await _httpClient.GetAsync($"/me?access_token={accessToken}?fields=id,email,name");
+            var response = await _httpClient.GetAsync($"/me?access_token={accessToken.AccessToken}&fields=id,email,name");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
             return JsonConvert.DeserializeObject<FacebookUserData>(await response.Content.ReadAsStringAsync());
         }
     }
