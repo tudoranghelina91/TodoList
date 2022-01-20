@@ -1,8 +1,6 @@
-﻿using DoStuff.DAL;
-using DoStuff.Models;
+﻿using DoStuff.Models;
 using DoStuff.Services.Users;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace DoStuff.API.Controllers

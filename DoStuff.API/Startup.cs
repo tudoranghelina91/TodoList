@@ -8,7 +8,6 @@ using Microsoft.Net.Http.Headers;
 using DoStuff.DAL;
 using DoStuff.Services.Facebook;
 using DoStuff.Services.Users;
-using System.Net.Http;
 
 namespace DoStuff.API
 {
