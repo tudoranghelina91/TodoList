@@ -16,7 +16,7 @@ namespace DoStuff.Services.Facebook
 
         public async Task<FacebookAccessToken> GetAccessToken(string code)
         {
-            var response = await _httpClient.GetAsync($"/v12.0/oauth/access_token?client_id=171596774608986&client_secret=a585ff6b41bfbbe6f222cbe581a69042&redirect_uri=https://localhost:4200/login&code={code}");
+            var response = await _httpClient.GetAsync($"/v12.0/oauth/access_token?client_id=171596774608986&client_secret=a585ff6b41bfbbe6f222cbe581a69042&redirect_uri=https://dostuffclient.azurewebsites.net/login&code={code}");
             
             if (!response.IsSuccessStatusCode)
             {
