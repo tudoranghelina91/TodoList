@@ -15,6 +15,7 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
+      "workingDirectory": "./bin/Debug/net6.0",
       "launchBrowser": true,
       "launchUrl": "todolist",
       "environmentVariables": {
@@ -23,7 +24,7 @@
     },
     "DoStuff.API": {
       "commandName": "Project",
-      "workingDirectory": "C:\\Users\\tudor\\source\\repos\\TodoList\\DoStuff.API\\bin\\Debug\\net6.0",
+      "workingDirectory": "./bin/Debug/net6.0",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
