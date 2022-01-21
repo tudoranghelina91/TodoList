@@ -46,7 +46,6 @@ export class LoginServiceService {
 
   getUserDetails(token : string)
   {
-    console.log(token);
     let decodedToken : any = jwtDecode(token);
     let user = new User();
     user.id = decodedToken.sub;
