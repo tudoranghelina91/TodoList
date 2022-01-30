@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../interfaces/IUser';
 import { LoginServiceService } from '../services/login-service.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -53,6 +54,6 @@ export class LoginComponent implements OnInit {
   }
 
   fbLogin() {
-    window.location.href = "https://www.facebook.com/v12.0/dialog/oauth?client_id=171596774608986&redirect_uri=https://dostuffclient.azurewebsites.net/login&scope=email"
+    window.location.href = `https://www.facebook.com/v12.0/dialog/oauth?client_id=${environment.facebook.clientId}&redirect_uri=${window.location.href}&scope=email`;
   }
 }
