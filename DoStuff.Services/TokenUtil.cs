@@ -1,4 +1,5 @@
 ﻿using DoStuff.Models;
+using DoStuff.Models.Settings;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -18,22 +19,22 @@ namespace DoStuff.API
             return claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Email).Value;
         }
 
-        public static string GenerateToken(User user)
+        public static string GenerateToken(User user, JwtSettings jwtSettings)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisismySecretKey"));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.IssuerSigningKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
 
             var token = new JwtSecurityToken(
-                "Test",
-                "Test",
+                jwtSettings.ValidIssuer,
+                jwtSettings.ValidAudience,
                 new[]
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, Convert.ToString(user.Id)),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email)
                 },
-                expires: DateTime.UtcNow.AddMonths(1), 
+                expires: DateTime.UtcNow.AddDays(31), 
                 signingCredentials: credentials
             );
 
