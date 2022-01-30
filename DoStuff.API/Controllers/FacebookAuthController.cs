@@ -1,4 +1,5 @@
 ﻿using DoStuff.Models;
+using DoStuff.Models.Settings;
 using DoStuff.Services.Facebook;
 using DoStuff.Services.Users;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,12 @@ namespace DoStuff.API.Controllers
     {
         private readonly IFacebookAuthService _facebookAuthService;
         private readonly IUserService _userService;
-        public FacebookAuthController(IFacebookAuthService facebookAuthService, IUserService userService)
+        private readonly JwtSettings _jwtSettings;
+        public FacebookAuthController(IFacebookAuthService facebookAuthService, IUserService userService, JwtSettings jwtSettings)
         {
             _facebookAuthService = facebookAuthService;
             _userService = userService;
+            _jwtSettings = jwtSettings;
         }
 
         [HttpGet]
@@ -52,7 +55,7 @@ namespace DoStuff.API.Controllers
                 user = await this._userService.Insert(user);
             }
 
-            return TokenUtil.GenerateToken(user);
+            return TokenUtil.GenerateToken(user, _jwtSettings);
         }
     }
 }

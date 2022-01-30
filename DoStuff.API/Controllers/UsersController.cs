@@ -1,4 +1,5 @@
 ﻿using DoStuff.Models;
+using DoStuff.Models.Settings;
 using DoStuff.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -10,9 +11,11 @@ namespace DoStuff.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UsersController(IUserService userService)
+        private readonly JwtSettings _jwtSettings;
+        public UsersController(IUserService userService, JwtSettings jwtSettings)
         {
             _userService = userService;
+            _jwtSettings = jwtSettings;
         }
 
         [HttpPost("Login")]
@@ -34,7 +37,7 @@ namespace DoStuff.API.Controllers
 
             if (u.HashedPassword == hashedPassword)
             {
-                return TokenUtil.GenerateToken(u);
+                return TokenUtil.GenerateToken(u, _jwtSettings);
             }
 
             return Unauthorized();
