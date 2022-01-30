@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  baseUri: "https://localhost:5001/api"
+  baseUri: "https://localhost:5001/api",
+  facebook: {
+    clientId: "171596774608986"
+  }
 };
 
 /*
