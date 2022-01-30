@@ -8,6 +8,7 @@ using Microsoft.Net.Http.Headers;
 using DoStuff.DAL;
 using DoStuff.Services.Facebook;
 using DoStuff.Services.Users;
+using DoStuff.API.Extensions;
 
 namespace DoStuff.API
 {
@@ -23,7 +24,7 @@ namespace DoStuff.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<TodoListContext>(options => options.UseSqlite(Configuration.GetConnectionString("prod")));
+            services.AddDbContext<TodoListContext>(options => options.UseSqlite(Configuration.GetConnectionString("DB")));
             services.AddControllers()
                 .AddNewtonsoftJson(o => {
                     o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
@@ -39,6 +40,7 @@ namespace DoStuff.API
                     });
             });
 
+            services.AddJwtTokenServices(Configuration);
             services.AddHttpClient();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IFacebookAuthService, FacebookAuthService>();
