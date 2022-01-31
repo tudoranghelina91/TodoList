@@ -8,15 +8,19 @@ using Microsoft.Net.Http.Headers;
 using DoStuff.DAL;
 using DoStuff.Services.Facebook;
 using DoStuff.Services.Users;
-using DoStuff.API.Extensions;
+using DoStuff.Models.Settings;
 
 namespace DoStuff.API
 {
     public class Startup
     {
+        private readonly JwtSettings _jwtSettings;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            _jwtSettings = new JwtSettings();
+
+            configuration.Bind("JsonWebTokenKeys", _jwtSettings);
         }
 
         public IConfiguration Configuration { get; }
@@ -39,8 +43,7 @@ namespace DoStuff.API
                         builder.AllowAnyMethod();
                     });
             });
-
-            services.AddJwtTokenServices(Configuration);
+            services.AddSingleton(_jwtSettings);
             services.AddHttpClient();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IFacebookAuthService, FacebookAuthService>();

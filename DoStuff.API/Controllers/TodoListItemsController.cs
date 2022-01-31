@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DoStuff.Models;
 using DoStuff.DAL;
 using Microsoft.EntityFrameworkCore;
+using DoStuff.Models.Settings;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace DoStuff.API.Controllers
@@ -14,16 +15,18 @@ namespace DoStuff.API.Controllers
     public class TodoListItemsController : ControllerBase
     {
         private readonly TodoListContext _context;
-        public TodoListItemsController(TodoListContext context)
+        private readonly JwtSettings _jwtSettings;
+        public TodoListItemsController(TodoListContext context, JwtSettings jwtSettings)
         {
             _context = context;
+            _jwtSettings = jwtSettings;
         }
 
         // GET: api/<TodoListItemsController>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoListItem>>> Get()
         {
-            var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"]));
+            var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"], _jwtSettings));
 
             if (u == null)
             {
@@ -37,7 +40,7 @@ namespace DoStuff.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoListItem>> Get(int id)
         {
-            var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"]));
+            var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"], _jwtSettings));
 
             if (u == null)
             {
@@ -50,7 +53,7 @@ namespace DoStuff.API.Controllers
         [HttpGet("{list}/{page}/{count}")]
         public async Task<ActionResult<IEnumerable<TodoListItem>>> Get(int list, int page, int count)
         {
-            var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"]));
+            var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"], _jwtSettings));
 
             if (u == null)
             {
@@ -67,7 +70,7 @@ namespace DoStuff.API.Controllers
         [HttpGet("GetItemsCount/{list}")]
         public async Task<ActionResult<int>> GetItemsCount(int list)
         {
-            var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"]));
+            var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"], _jwtSettings));
 
             if (u == null)
             {
@@ -85,7 +88,7 @@ namespace DoStuff.API.Controllers
         {
             try
             {
-                var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"]));
+                var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"], _jwtSettings));
 
                 if (u == null)
                 {
@@ -108,7 +111,7 @@ namespace DoStuff.API.Controllers
         {
             try
             {
-                var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"]));
+                var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"], _jwtSettings));
 
                 if (u == null)
                 {
@@ -141,7 +144,7 @@ namespace DoStuff.API.Controllers
         {
             try
             {
-                var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"]));
+                var u = await _context.Users.SingleOrDefaultAsync(u => u.Email == TokenUtil.GetUserEmail(Request.Headers["Authorization"], _jwtSettings));
 
                 if (u == null)
                 {
